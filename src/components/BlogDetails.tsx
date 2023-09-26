@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import BlogOptions from "./BlogOptions";
+import { useRouter } from "next/navigation";
 
 interface BlogProps {
   blog: Blog;
@@ -22,13 +23,14 @@ type UserData = {
   _id: string;
 };
 
-type ProfileResponse = {
+export type ProfileResponse = {
   message: string;
   userData: UserData[];
 };
 
 export default function BlogDetails({ blog }: BlogProps) {
   const session = useSession();
+  const router = useRouter();
   const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
@@ -67,7 +69,10 @@ export default function BlogDetails({ blog }: BlogProps) {
   const formattedDate = useFormatDate(`${blog?.createdAt}`);
 
   return (
-    <div className="border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4">
+    <div
+      onClick={() => router.push(`/details/${blog?._id}`)}
+      className="z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
+    >
       <div className="flex items-center justify-between border-b border-zinc-400 pb-3">
         <div className="flex items-center gap-2">
           <AvatarDemo image={`${blog.user.image}`} id={blog?.user?._id} />
@@ -80,7 +85,11 @@ export default function BlogDetails({ blog }: BlogProps) {
         </div>
 
         {blog.user._id === userId ? (
-          <BlogOptions onDelete={handleBlogDelete} id={blog?._id} />
+          <BlogOptions
+            onDelete={handleBlogDelete}
+            id={blog?._id}
+            blogId={blog?._id || ""}
+          />
         ) : null}
       </div>
       <div className="flex flex-col gap-2">

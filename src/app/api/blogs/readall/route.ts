@@ -6,10 +6,12 @@ import { NextResponse } from "next/server";
 export async function GET() {
   await connectToDB();
   try {
-    const blogs = await Blog.find().populate({
-      path: "user",
-      model: User,
-    });
+    const blogs = await Blog.find()
+      .populate({
+        path: "user",
+        model: User,
+      })
+      .populate({ path: "comments.user", model: User });
     return NextResponse.json(
       { message: "All Blogs fetched", blogs },
       { status: 200 }

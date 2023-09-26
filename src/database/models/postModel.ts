@@ -5,7 +5,8 @@ const schema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
+      required: true,
     },
     title: {
       type: String,
@@ -18,6 +19,49 @@ const schema = new mongoose.Schema(
       minLength: 10,
       required: true,
     },
+    likes: [
+      {
+        user: {
+          type: mongoose.Types.ObjectId,
+          ref: "user",
+          required: true,
+        },
+      },
+    ],
+    comments: [
+      {
+        user: {
+          type: mongoose.Types.ObjectId,
+          ref: "user",
+        },
+        comment: {
+          type: String,
+          required: true,
+        },
+        replies: [
+          {
+            user: {
+              type: mongoose.Types.ObjectId,
+              ref: "user",
+            },
+            reply: {
+              type: String,
+              required: true,
+            },
+            createdAt: {
+              type: Date,
+              default: () => Date.now(),
+              immutable: true,
+            },
+          },
+        ],
+        createdAt: {
+          type: Date,
+          default: () => Date.now(),
+          immutable: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

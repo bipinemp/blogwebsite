@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
   const data = { title, body };
   const token = await getToken({ req });
   const userDetails = (await User.findOne({ email: token?.email })) as UserData;
-  console.log(userDetails);
 
   try {
     await connectToDB();
