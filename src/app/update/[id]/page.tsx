@@ -48,7 +48,7 @@ const page = ({ params }: { params: { id: string } }) => {
     <Container>
       <div className="max-w-[400px] mx-auto mt-10 flex flex-col gap-5">
         <h1 className="text-xl font-bold tracking-widest underline underline-offset-8">
-          Update Blog :
+          Update Blog ::
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full">
           <Input
