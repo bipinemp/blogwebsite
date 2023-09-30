@@ -15,19 +15,31 @@ export const blogSchema = z.object({
 export type TBlogSchema = z.infer<typeof blogSchema>;
 
 // All blogs GET response
+type UserDetail = {
+  _id: string;
+  name: string;
+  email: string;
+  image: string;
+  emailVerified: string | null;
+  createdAt: string;
+};
+
+export type CommentType = {
+  user: UserDetail;
+  comment: string;
+  _id: string;
+  replies: [];
+  createdAt: string;
+};
+
 export type Blog = {
   _id: string;
-  user: {
-    _id: string;
-    name: string;
-    email: string;
-    image: string;
-    emailVerified: string | null;
-  };
+  user: UserDetail;
   title: string;
   body: string;
   createdAt: string;
   updatedAt: string;
+  comments: CommentType[];
   __v: number;
 };
 

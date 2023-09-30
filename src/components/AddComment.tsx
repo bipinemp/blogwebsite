@@ -103,7 +103,7 @@ export default function AddComment({
                   {comment?.user.name}
                 </p>
                 <p className="text-[0.7rem] italic">
-                  {formatDatee(comment?.user?.createdAt)}
+                  {formatDatee(comment?.createdAt)}
                 </p>
               </div>
             </div>

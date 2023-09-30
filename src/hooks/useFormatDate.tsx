@@ -20,7 +20,9 @@ export const useFormatDate = (date: string) => {
   const monthIndex = createdAtDate.getMonth();
   const day = createdAtDate.getDate();
 
-  const formattedDate = `${months[monthIndex]} ${day}, ${year}`;
+  const formattedDate = `${months[monthIndex]} ${day} ${
+    year !== 2023 ? "," + year : ""
+  }`;
 
   return formattedDate;
 };

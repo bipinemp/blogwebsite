@@ -32,7 +32,10 @@ export async function POST(
   }
 
   const userId = userDetails?._id;
-  const blog = await Blog.findOne({ _id: params.id }).populate("user");
+  const blog = await Blog.findOne({ _id: params.id }).populate({
+    path: "user",
+    model: User,
+  });
 
   try {
     if (blog) {

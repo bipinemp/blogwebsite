@@ -83,7 +83,7 @@ const page = ({ params }: { params: { id: string } }) => {
 
         <div className="flex gap-5 justify-between">
           {blogs?.blogs.length !== undefined && blogs?.blogs.length !== 0 ? (
-            <div className="min-w-[250px] max-h-[200px] flex gap-2 justify-center-center border-[2px] px-4 pt-5 rounded-lg">
+            <div className="min-w-[250px] h-[100px] flex gap-2 border-[2px] px-4 pt-5 rounded-lg">
               <FileText className="w-5 h-5" />
               <h1 className="text-gray-400">
                 {blogs &&
@@ -98,7 +98,7 @@ const page = ({ params }: { params: { id: string } }) => {
               </h1>
             </div>
           ) : null}
-          <div className="min-w-[70%] flex flex-col gap-5 mb-10">
+          <div className="w-full flex flex-col gap-5 mb-10">
             {blogs?.blogs.map((blog) => {
               return <BlogDetails blog={blog} key={blog._id} />;
             })}

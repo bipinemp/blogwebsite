@@ -13,6 +13,12 @@ type UserData = {
   emailVerified: string | null | undefined;
 };
 
+type Like = {
+  _id: string;
+  user: UserData;
+  createdAt: string;
+};
+
 type Comment = {
   user: UserData;
   comment: string;
@@ -21,7 +27,7 @@ type Comment = {
   createdAt: string; // Change to the appropriate type if necessary
 };
 
-type Blog = {
+export type Blog = {
   _id: string;
   user: UserData;
   title: string;
@@ -30,7 +36,7 @@ type Blog = {
   updatedAt: string; // Change to the appropriate type if necessary
   __v: number;
   comments: Comment[];
-  likes: any[]; // Change to the appropriate type if necessary
+  likes: Like[]; // Change to the appropriate type if necessary
   save(): Promise<Blog>;
 };
 

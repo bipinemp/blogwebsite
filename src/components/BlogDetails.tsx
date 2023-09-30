@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import BlogOptions from "./BlogOptions";
 import { useRouter } from "next/navigation";
+import { MessageCircle } from "lucide-react";
 
 interface BlogProps {
   blog: Blog;
@@ -97,6 +98,25 @@ export default function BlogDetails({ blog }: BlogProps) {
           <ChevronRight className="w-4 h-4 font-bold" /> {blog.title}
         </h1>
         <p className="pl-5 opacity-80">{blog.body}</p>
+      </div>
+      <div className="pl-5">
+        <div>
+          {blog?.comments.length > 0 ? (
+            <Button size="sm" variant="ghost" className="flex gap-2 opacity-80">
+              <MessageCircle className="w-5 h-5" />{" "}
+              <p>
+                {blog?.comments.length}{" "}
+                {blog?.comments.length === 1 && blog?.comments.length > 0
+                  ? "Comment"
+                  : "Comments"}
+              </p>
+            </Button>
+          ) : (
+            <Button size="sm" variant="ghost" className="flex gap-2 opacity-80">
+              <MessageCircle className="w-5 h-5" /> Add Comment
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

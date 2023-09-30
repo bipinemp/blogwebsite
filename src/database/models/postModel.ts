@@ -28,6 +28,8 @@ const schema = new mongoose.Schema(
         },
       },
     ],
+    upvotes: [{ user: { type: mongoose.Types.ObjectId, ref: "user" } }],
+    downvotes: [{ user: { type: mongoose.Types.ObjectId, ref: "user" } }],
     comments: [
       {
         user: {
@@ -66,7 +68,7 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-type BlogType = InferSchemaType<typeof schema>;
+export type BlogType = InferSchemaType<typeof schema>;
 
 const Blog = mongoose?.models?.Blog || mongoose.model<BlogType>("Blog", schema);
 

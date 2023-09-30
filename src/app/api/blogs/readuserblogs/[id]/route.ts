@@ -1,5 +1,6 @@
 import connectToDB from "@/database/config/db";
 import Blog from "@/database/models/postModel";
+import User from "@/database/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -8,7 +9,10 @@ export async function GET(
 ) {
   await connectToDB();
   try {
-    const blogs = await Blog.find({ user: params.id }).populate("user");
+    const blogs = await Blog.find({ user: params.id }).populate({
+      path: "user",
+      model: User,
+    });
     return NextResponse.json(
       { message: "All Blogs fetched", blogs },
       { status: 200 }
