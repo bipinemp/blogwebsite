@@ -11,7 +11,9 @@ export async function GET() {
         path: "user",
         model: User,
       })
-      .populate({ path: "comments.user", model: User });
+      .populate({ path: "comments.user", model: User })
+      .populate({ path: "upvotes", model: User })
+      .populate({ path: "downvotes", model: User });
     return NextResponse.json(
       { message: "All Blogs fetched", blogs },
       { status: 200 }

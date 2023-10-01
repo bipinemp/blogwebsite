@@ -19,17 +19,8 @@ const schema = new mongoose.Schema(
       minLength: 10,
       required: true,
     },
-    likes: [
-      {
-        user: {
-          type: mongoose.Types.ObjectId,
-          ref: "user",
-          required: true,
-        },
-      },
-    ],
-    upvotes: [{ user: { type: mongoose.Types.ObjectId, ref: "user" } }],
-    downvotes: [{ user: { type: mongoose.Types.ObjectId, ref: "user" } }],
+    upvotes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
+    downvotes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
     comments: [
       {
         user: {

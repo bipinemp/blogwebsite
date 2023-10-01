@@ -9,6 +9,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { BlogDetail } from "@/app/details/[id]/page";
 import { useFormatDate } from "@/hooks/useFormatDate";
+import { useRouter } from "next/navigation";
 
 export default function AddComment({
   blogId,
@@ -17,6 +18,7 @@ export default function AddComment({
   blogId: string;
   blogDetails: BlogDetail | null | undefined;
 }) {
+  const router = useRouter();
   const session = useSession();
   const [userId, setUserId] = useState<string>("");
   const [comment, setComment] = useState<string>("");
@@ -44,6 +46,9 @@ export default function AddComment({
   };
 
   const submitComment = async () => {
+    if (session?.status === "unauthenticated") {
+      router.push("/sign-in");
+    }
     try {
       const response = await axios.post(
         `http://localhost:3000/api/blogs/comment/${blogId}`,

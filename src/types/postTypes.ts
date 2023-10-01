@@ -40,6 +40,8 @@ export type Blog = {
   createdAt: string;
   updatedAt: string;
   comments: CommentType[];
+  upvotes: UserDetail[];
+  downvotes: UserDetail[];
   __v: number;
 };
 
