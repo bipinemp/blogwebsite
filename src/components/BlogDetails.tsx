@@ -2,7 +2,12 @@
 
 import { Blog } from "@/types/postTypes";
 import AvatarDemo from "./header/Avatar";
-import { ChevronRight, ArrowBigUp, ArrowBigDown } from "lucide-react";
+import {
+  ChevronRight,
+  ArrowBigUp,
+  ArrowBigDown,
+  MessageCircle,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "./ui/button";
@@ -10,8 +15,6 @@ import { useSession } from "next-auth/react";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import BlogOptions from "./BlogOptions";
 import { useRouter } from "next/navigation";
-import { MessageCircle } from "lucide-react";
-import Image from "next/image";
 
 interface BlogProps {
   blog: Blog;
@@ -171,7 +174,7 @@ export default function BlogDetails({ blog }: BlogProps) {
               e.stopPropagation();
             }}
             className={`${
-              upvoted ? "text-red-500" : ""
+              upvoted ? "fill-green-500 stroke-green-500" : ""
             } w-9 h-9 hover:bg-neutral-800 p-[0.2rem] rounded-full transition`}
           />
           <h1>{actualVote} </h1>
@@ -181,7 +184,7 @@ export default function BlogDetails({ blog }: BlogProps) {
               e.stopPropagation();
             }}
             className={`${
-              downvoted ? "text-red-500" : ""
+              downvoted ? "fill-red-500 stroke-red-500" : ""
             } w-9 h-9 hover:bg-neutral-800 p-[0.2rem] rounded-full transition`}
           />
         </div>
