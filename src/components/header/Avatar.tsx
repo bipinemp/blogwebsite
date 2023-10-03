@@ -4,20 +4,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const AvatarDemo = ({
-  image,
-  id,
-}: {
-  image: string | null | undefined;
-  id: string;
-}) => {
+const AvatarDemo = ({ image, id }: { image: string; id: string }) => {
   const router = useRouter();
   return (
     <Avatar
       className="cursor-pointer"
       onClick={() => router.push(`/profile/${id}`)}
     >
-      <AvatarImage src={`${image}`} alt="shadcn" />
+      <AvatarImage src={image} alt="shadcn" />
       <AvatarFallback>
         <Image
           width={30}

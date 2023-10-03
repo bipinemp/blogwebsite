@@ -142,7 +142,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     >
       <div className="flex items-center justify-between border-b border-zinc-400 pb-3">
         <div className="flex items-center gap-2">
-          <AvatarDemo image={`${blog.user.image}`} id={blog?.user?._id} />
+          <AvatarDemo image={blog.user.image} id={blog?.user?._id} />
 
           <div className="flex flex-col">
             <p className="text-[0.85rem]  font-semibold tracking-wide">
