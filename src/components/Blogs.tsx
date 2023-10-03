@@ -9,7 +9,7 @@ export default async function Blogs() {
   if (AllBlogs.blogs.length === 0) {
     return (
       <h1 className="mt-10 text-center text-2xl font-bold tracking-wider">
-        No Blogs available :(
+        No Blogs available.
       </h1>
     );
   }
