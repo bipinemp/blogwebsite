@@ -6,8 +6,6 @@ const connectToDB = async (): Promise<void> => {
     if (mongoose.connection.readyState === 0) {
       const conn = await mongoose.connect(URL);
       console.log(`Connected to DB : ${conn.connection.host}`);
-    } else {
-      console.log("Already connection to DB");
     }
   } catch (error) {
     console.log(`Error : ${(error as Error).message}`);
