@@ -6,6 +6,7 @@ import BlogDetails from "./BlogDetails";
 export default async function Blogs() {
   const response = await axios.get("http://localhost:3000/api/blogs/readall");
   const AllBlogs: Blogs = response.data;
+
   if (AllBlogs.blogs.length === 0) {
     return (
       <h1 className="mt-10 text-center text-2xl font-bold tracking-wider">

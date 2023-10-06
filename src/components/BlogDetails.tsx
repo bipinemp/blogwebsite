@@ -140,7 +140,7 @@ export default function BlogDetails({ blog }: BlogProps) {
   return (
     <div
       onClick={() => router.push(`/details/${blog?._id}`)}
-      className="z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
+      className="min-h-[200px] z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
     >
       <div className="flex items-center justify-between border-b border-zinc-400 pb-3">
         <div className="flex items-center gap-2">
