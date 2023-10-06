@@ -105,6 +105,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       setUpvoted(!upvoted);
       try {
         await axios.post(`http://localhost:3000/api/blogs/upvote/${blog?._id}`);
+        router.refresh();
       } catch (error) {
         alert(error);
         console.log(error);
@@ -128,6 +129,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     setDownvoted(!downvoted);
     try {
       await axios.post(`http://localhost:3000/api/blogs/downvote/${blog?._id}`);
+      router.refresh();
     } catch (error) {
       alert(error);
     }

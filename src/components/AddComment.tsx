@@ -77,21 +77,36 @@ export default function AddComment({
           Comments ({blogDetails?.comments.length})
         </h1>
       </div>
-      <div className="flex gap-3 items-center">
-        <AvatarDemo image={session?.data?.user?.image} id={userId} />
-        <Input
-          value={comment}
-          onChange={handleCommentChange}
-          placeholder="Add an Comment..."
-          className="max-w-[350px] border-zinc-500"
-        />
-        <Button
-          onClick={submitComment}
-          className="font-bold tracking-wide text-lg"
-        >
-          Submit
-        </Button>
-      </div>
+      {session.status === "authenticated" ? (
+        <div className="flex gap-3 items-center">
+          <AvatarDemo
+            image={session?.data?.user?.image || ""}
+            id={userId || ""}
+          />
+          <Input
+            value={comment}
+            onChange={handleCommentChange}
+            placeholder="Add an Comment..."
+            className="max-w-[350px] border-zinc-500"
+          />
+          <Button
+            onClick={submitComment}
+            className="font-bold tracking-wide text-lg"
+          >
+            Submit
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <Button
+            onClick={() => router.push("/sign-in")}
+            variant="outline"
+            className="font-bold font-xl tracking-wide"
+          >
+            Sign In to Comment
+          </Button>
+        </div>
+      )}
       <div className="flex flex-col gap-3 mt-5 mb-10">
         {blogDetails?.comments?.map((comment) => (
           <div
