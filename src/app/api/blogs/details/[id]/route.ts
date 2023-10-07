@@ -21,7 +21,8 @@ export async function GET(
         path: "user",
         model: User,
       })
-      .populate({ path: "comments.user", model: User });
+      .populate({ path: "comments.user", model: User })
+      .populate({ path: "comments.replies.user", model: User });
 
     return NextResponse.json(
       { message: "Blog Details Read Successfully", blog },

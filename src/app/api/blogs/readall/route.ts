@@ -12,6 +12,7 @@ export async function GET() {
         model: User,
       })
       .populate({ path: "comments.user", model: User })
+      .populate({ path: "comments.replies.user", model: User })
       .populate({ path: "upvotes", model: User })
       .populate({ path: "downvotes", model: User })
       .sort({ createdAt: -1 });

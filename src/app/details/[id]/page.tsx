@@ -20,11 +20,18 @@ type UserDetail = {
   createdAt: string;
 };
 
+export type ReplyType = {
+  user: UserDetail;
+  reply: string;
+  _id: string;
+  createdAt: string;
+};
+
 export type CommentType = {
   user: UserDetail;
   comment: string;
   _id: string;
-  replies: [];
+  replies: ReplyType[];
   createdAt: string;
 };
 
