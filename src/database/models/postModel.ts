@@ -19,6 +19,10 @@ const schema = new mongoose.Schema(
       minLength: 10,
       required: true,
     },
+    edited: {
+      type: Boolean,
+      default: false,
+    },
     upvotes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
     downvotes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
     comments: [

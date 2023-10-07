@@ -37,6 +37,7 @@ export type Blog = {
   user: UserDetail;
   title: string;
   body: string;
+  edited: boolean;
   createdAt: string;
   updatedAt: string;
   comments: CommentType[];

@@ -32,6 +32,7 @@ export type Blog = {
   user: UserData;
   title: string;
   body: string;
+  edited: boolean;
   createdAt: string; // Change to the appropriate type if necessary
   updatedAt: string; // Change to the appropriate type if necessary
   __v: number;
@@ -79,6 +80,8 @@ export async function PATCH(
     if (body) {
       blog.body = body;
     }
+
+    blog.edited = true;
 
     const updatedBlog = await blog.save();
     return NextResponse.json(

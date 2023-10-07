@@ -19,7 +19,7 @@ const LoadingChild = () => {
   );
 };
 
-function Loading() {
+function BlogLoading() {
   return (
     <div className="mx-auto mt-20 max-w-5xl px-6">
       <Container>
@@ -36,4 +36,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default BlogLoading;

@@ -165,6 +165,9 @@ export default function BlogDetails({ blog }: BlogProps) {
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-2xl tracking-wide flex gap-1 items-center">
           <ChevronRight className="w-4 h-4 font-bold" /> {blog.title}
+          <span className="text-xs text-gray-400">
+            {blog?.edited ? "(edited)" : null}
+          </span>
         </h1>
         <p className="pl-5 opacity-80">{blog.body}</p>
       </div>
