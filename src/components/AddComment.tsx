@@ -78,7 +78,7 @@ export default function AddComment({
         </h1>
       </div>
       <div className="flex gap-3 items-center">
-        <AvatarDemo image={session?.data?.user?.image} id={userId} />
+        <AvatarDemo image={session?.data?.user?.image || ""} id={userId} />
         <Input
           value={comment}
           onChange={handleCommentChange}
