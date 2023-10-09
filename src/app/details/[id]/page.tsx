@@ -1,60 +1,20 @@
 "use client";
 
 import AddComment from "@/components/AddComment";
-import { ProfileResponse } from "@/components/BlogDetails";
 import BlogOptions from "@/components/BlogOptions";
 import Container from "@/components/Container";
 import AvatarDemo from "@/components/header/Avatar";
 import { useFormatDate } from "@/hooks/useFormatDate";
+import { Blog, BlogDetail, ProfileResponse } from "@/types/postTypes";
 import axios from "axios";
 import { ChevronRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-type UserDetail = {
-  _id: string | null | undefined;
-  name: string;
-  email: string;
-  image: string;
-  emailVerified: string | null;
-  createdAt: string;
-};
-
-export type ReplyType = {
-  user: UserDetail;
-  reply: string;
-  _id: string;
-  createdAt: string;
-};
-
-export type CommentType = {
-  user: UserDetail;
-  comment: string;
-  _id: string;
-  replies: ReplyType[];
-  createdAt: string;
-};
-
-export type BlogDetail = {
-  _id: string;
-  user: UserDetail;
-  title: string;
-  body: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  comments: CommentType[];
-  likes: [];
-};
-export type BlogDetailsType = {
-  message: string;
-  blog: BlogDetail;
-};
-
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const session = useSession();
-  const [blogDetails, setBlogDetails] = useState<BlogDetail | null>(null);
+  const [blogDetails, setBlogDetails] = useState<Blog | null>(null);
   const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
@@ -77,7 +37,7 @@ const page = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     const getBlogDetails = async (id: string) => {
-      const response = await axios.get<BlogDetailsType>(
+      const response = await axios.get<BlogDetail>(
         `http://localhost:3000/api/blogs/details/${id}`
       );
       setBlogDetails(response?.data?.blog);
@@ -131,7 +91,7 @@ const page = ({ params }: { params: { id: string } }) => {
 
           <div className="mt-10 flex flex-col gap-2">
             <h1 className="font-bold text-2xl tracking-wide flex gap-1 items-center">
-              <ChevronRight className="w-4 h-4 font-bold" />{" "}
+              <ChevronRight className="w-4 h-4 font-bold" />
               {blogDetails?.title}
             </h1>
             <p className="pl-5 opacity-80">{blogDetails?.body}</p>
@@ -139,7 +99,7 @@ const page = ({ params }: { params: { id: string } }) => {
         </div>
         <AddComment
           blogId={blogDetails?._id || ""}
-          blogDetails={blogDetails || null || undefined}
+          blogDetails={blogDetails || null}
         />
       </section>
     </Container>

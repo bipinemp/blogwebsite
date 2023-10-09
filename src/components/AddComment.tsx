@@ -4,21 +4,20 @@ import { useEffect, useState } from "react";
 import AvatarDemo from "./header/Avatar";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { ProfileResponse } from "./BlogDetails";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { BlogDetail } from "@/app/details/[id]/page";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useRouter } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 import { Textarea } from "./ui/textarea";
+import { Blog, BlogDetail, ProfileResponse } from "@/types/postTypes";
 
 export default function AddComment({
   blogId,
   blogDetails,
 }: {
   blogId: string;
-  blogDetails: BlogDetail | null | undefined;
+  blogDetails: Blog | null;
 }) {
   const router = useRouter();
   const session = useSession();

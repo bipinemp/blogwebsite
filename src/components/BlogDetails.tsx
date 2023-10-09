@@ -1,6 +1,6 @@
 "use client";
 
-import { Blog } from "@/types/postTypes";
+import { Blog, ProfileResponse } from "@/types/postTypes";
 import AvatarDemo from "./header/Avatar";
 import {
   ChevronRight,
@@ -20,26 +20,13 @@ interface BlogProps {
   blog: Blog;
 }
 
-type UserData = {
-  email: string;
-  emailVerified: string | null;
-  image: string;
-  name: string;
-  _id: string;
-};
-
-export type ProfileResponse = {
-  message: string;
-  userData: UserData[];
-};
-
 export default function BlogDetails({ blog }: BlogProps) {
   const session = useSession();
   const router = useRouter();
   const [userId, setUserId] = useState<string>("");
 
-  const [upvote, setUpvote] = useState<number>(blog?.upvotes.length);
-  const [downvote, setDownvote] = useState<number>(blog?.downvotes.length);
+  const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
+  const [downvote, setDownvote] = useState<number>(blog?.downvotes?.length);
 
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
@@ -140,21 +127,21 @@ export default function BlogDetails({ blog }: BlogProps) {
   return (
     <div
       onClick={() => router.push(`/details/${blog?._id}`)}
-      className="min-h-[200px] z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
+      className="min-h-[220px] z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
     >
       <div className="flex items-center justify-between border-b border-zinc-400 pb-3">
         <div className="flex items-center gap-2">
-          <AvatarDemo image={blog.user.image} id={blog?.user?._id} />
+          <AvatarDemo image={blog?.user?.image} id={blog?.user?._id} />
 
           <div className="flex flex-col">
             <p className="text-[0.85rem]  font-semibold tracking-wide">
-              {blog.user.name}
+              {blog?.user?.name}
             </p>
             <p className="text-[0.7rem] italic">{formattedDate}</p>
           </div>
         </div>
 
-        {blog.user._id === userId ? (
+        {blog?.user?._id === userId ? (
           <BlogOptions
             onDelete={handleBlogDelete}
             id={blog?._id}
@@ -169,7 +156,7 @@ export default function BlogDetails({ blog }: BlogProps) {
             {blog?.edited ? "(edited)" : null}
           </span>
         </h1>
-        <p className="pl-5 opacity-80">{blog.body}</p>
+        <p className="pl-5 opacity-80">{blog?.body}</p>
       </div>
       <div className="flex gap-5 items-center pl-5">
         <div className="flex gap-1 items-center opacity-80">
@@ -194,12 +181,12 @@ export default function BlogDetails({ blog }: BlogProps) {
           />
         </div>
         <div>
-          {blog?.comments.length > 0 ? (
+          {blog?.comments?.length > 0 ? (
             <Button size="sm" variant="ghost" className="flex gap-2 opacity-80">
               <MessageCircle className="w-5 h-5" />{" "}
               <p>
-                {blog?.comments.length}{" "}
-                {blog?.comments.length === 1 && blog?.comments.length > 0
+                {blog?.comments?.length}{" "}
+                {blog?.comments?.length === 1 && blog?.comments.length > 0
                   ? "Comment"
                   : "Comments"}
               </p>

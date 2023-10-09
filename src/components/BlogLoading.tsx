@@ -3,7 +3,7 @@ import React from "react";
 
 const LoadingChild = () => {
   return (
-    <div className="h-[200px] animate-pulse z-20 cursor-pointer border-[2px] border-gray-700 rounded-lg p-4 flex flex-col gap-10">
+    <div className="h-[220px] animate-pulse z-20 cursor-pointer border-[2px] border-gray-700 rounded-lg p-4 flex flex-col gap-10">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <p className="w-[50px] h-[50px] rounded-full bg-gray-700"></p>
@@ -24,6 +24,10 @@ function BlogLoading() {
     <div className="mx-auto mt-20 max-w-5xl px-6">
       <Container>
         <div className="flex flex-col gap-7">
+          <LoadingChild />
+          <LoadingChild />
+          <LoadingChild />
+          <LoadingChild />
           <LoadingChild />
           <LoadingChild />
           <LoadingChild />
