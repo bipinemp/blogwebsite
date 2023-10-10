@@ -222,7 +222,10 @@ export default function AddComment({
             <div className="border-l-[2px] ml-10">
               {comment.replies &&
                 comment.replies.map((reply) => (
-                  <div className="mt-5 ml-4 flex flex-col gap-0 border-[2px] rounded-lg py-3 pl-5">
+                  <div
+                    key={reply?._id}
+                    className="mt-5 ml-4 flex flex-col gap-0 border-[2px] rounded-lg py-3 pl-5"
+                  >
                     <div className="flex gap-3 items-center">
                       <AvatarDemo
                         image={reply?.user?.image || ""}

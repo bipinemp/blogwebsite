@@ -61,7 +61,7 @@ export interface BlogDetail {
   blog: Blog;
 }
 
-// for user profile
+// for user profile .
 export type ProfileResponse = {
   message: string;
   userData: UserDetail[];

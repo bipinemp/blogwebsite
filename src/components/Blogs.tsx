@@ -4,7 +4,7 @@ import Container from "./Container";
 import { Blogs } from "@/types/postTypes";
 import BlogDetails from "./BlogDetails";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { fetchAllBlogs } from "./functions/queries";
+import { fetchAllBlogs } from "./queries/queries";
 import { useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import BlogLoading from "./BlogLoading";
