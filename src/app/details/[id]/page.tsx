@@ -95,7 +95,7 @@ const page = ({ params }: { params: { id: string } }) => {
           `http://localhost:3000/api/blogs/delete/${id}`
         );
         if (response.status === 200) {
-          alert("Blog deleted Successfully");
+          alert("Blog deleted Successfully :)");
         }
       } catch (error: any) {
         alert(error?.message);
