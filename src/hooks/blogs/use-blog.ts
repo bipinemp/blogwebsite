@@ -24,3 +24,6 @@ export const useBlogDetails = (id: string) => {
 
   return { data, isLoading, isError, error };
 };
+
+// for deleting blog
+export const useDeleteBlog = (id: string) => {};
