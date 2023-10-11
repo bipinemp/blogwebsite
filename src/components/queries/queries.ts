@@ -37,3 +37,13 @@ export const fetchBlogDetails = async (id: string) => {
     return error;
   }
 };
+
+// for deleting Blog
+export const deleteBlog = async (id: string) => {
+  try {
+    const response = await axios.delete(`${BLOG_BASE_URL}/delete/${id}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

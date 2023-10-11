@@ -1,9 +1,12 @@
 import {
+  deleteBlog,
   fetchBlogDetails,
   fetchUserDetails,
 } from "@/components/queries/queries";
 import { BlogDetail, ProfileResponse } from "@/types/postTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+const queryClient = useQueryClient();
 
 // for fetching user Details
 export const useUserDetails = (email: string) => {
@@ -26,4 +29,15 @@ export const useBlogDetails = (id: string) => {
 };
 
 // for deleting blog
-export const useDeleteBlog = (id: string) => {};
+export const useDeleteBlog = (id: string) => {
+  const { mutate, isLoading } = useMutation({
+    mutationFn: () => deleteBlog(id),
+    onSuccess: () => {
+      alert("Blog deleted Successfully");
+      queryClient.invalidateQueries(["blogs"]);
+    },
+    onError: () => alert("something went wrong try again"),
+  });
+
+  return { mutate, isLoading };
+};

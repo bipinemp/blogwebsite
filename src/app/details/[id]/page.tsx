@@ -4,7 +4,11 @@ import AddComment from "@/components/AddComment";
 import BlogOptions from "@/components/BlogOptions";
 import Container from "@/components/Container";
 import AvatarDemo from "@/components/header/Avatar";
-import { useBlogDetails, useUserDetails } from "@/hooks/blogs/use-blog";
+import {
+  useBlogDetails,
+  useDeleteBlog,
+  useUserDetails,
+} from "@/hooks/blogs/use-blog";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import axios from "axios";
 import { ChevronRight } from "lucide-react";
@@ -23,20 +27,23 @@ const page = ({ params }: { params: { id: string } }) => {
   // hook for formating the User's account creation date
   const formattedDate = useFormatDate(BlogData?.blog?.createdAt || "");
 
+  // for deleting blog
   const handleBlogDelete = async (id: string) => {
-    const ans = confirm("Are you sure you want to Delete");
-    if (ans) {
-      try {
-        const response = await axios.delete(
-          `http://localhost:3000/api/blogs/delete/${id}`
-        );
-        if (response.status === 200) {
-          alert("Blog deleted Successfully :)");
-        }
-      } catch (error: any) {
-        alert(error?.message);
-      }
-    }
+    const { mutate: DeleteBlog, isLoading } = useDeleteBlog(id);
+    DeleteBlog();
+    // const ans = confirm("Are you sure you want to Delete");
+    // if (ans) {
+    //   try {
+    //     const response = await axios.delete(
+    //       `http://localhost:3000/api/blogs/delete/${id}`
+    //     );
+    //     if (response.status === 200) {
+    //       alert("Blog deleted Successfully :)");
+    //     }
+    //   } catch (error: any) {
+    //     alert(error?.message);
+    //   }
+    // }
   };
 
   return (
