@@ -4,12 +4,10 @@ import AddComment from "@/components/AddComment";
 import BlogOptions from "@/components/BlogOptions";
 import Container from "@/components/Container";
 import AvatarDemo from "@/components/header/Avatar";
-import {
-  useBlogDetails,
-  useDeleteBlog,
-  useUserDetails,
-} from "@/hooks/blogs/use-blog";
+import { deleteBlog } from "@/components/queries/queries";
+import { useBlogDetails, useUserDetails } from "@/hooks/blogs/use-blog";
 import { useFormatDate } from "@/hooks/useFormatDate";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { ChevronRight } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -17,6 +15,7 @@ import { useSession } from "next-auth/react";
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const session = useSession();
+  const queryClient = useQueryClient();
 
   // User Details
   const { data } = useUserDetails(session?.data?.user?.email || "");
@@ -29,8 +28,6 @@ const page = ({ params }: { params: { id: string } }) => {
 
   // for deleting blog
   const handleBlogDelete = async (id: string) => {
-    const { mutate: DeleteBlog, isLoading } = useDeleteBlog(id);
-    DeleteBlog();
     // const ans = confirm("Are you sure you want to Delete");
     // if (ans) {
     //   try {
@@ -44,6 +41,16 @@ const page = ({ params }: { params: { id: string } }) => {
     //     alert(error?.message);
     //   }
     // }
+    const { mutate, isLoading } = useMutation({
+      mutationFn: () => deleteBlog(id),
+      onSuccess: () => {
+        alert("Blog deleted Successfully");
+        queryClient.invalidateQueries(["blogs"]);
+      },
+      onError: () => alert("something went wrong try again"),
+    });
+
+    mutate();
   };
 
   return (
