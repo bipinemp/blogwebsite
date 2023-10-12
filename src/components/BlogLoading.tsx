@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 import React from "react";
 
-const LoadingChild = () => {
+export const BlogLoadingChild = () => {
   return (
     <div className="h-[220px] animate-pulse z-20 cursor-pointer border-[2px] border-gray-700 rounded-lg p-4 flex flex-col gap-10">
       <div className="flex items-center justify-between">
@@ -24,16 +24,16 @@ function BlogLoading() {
     <div className="mx-auto mt-20 max-w-5xl px-6">
       <Container>
         <div className="flex flex-col gap-7">
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
-          <LoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
+          <BlogLoadingChild />
         </div>
       </Container>
     </div>

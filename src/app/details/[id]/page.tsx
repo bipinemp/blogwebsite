@@ -1,6 +1,7 @@
 "use client";
 
 import AddComment from "@/components/AddComment";
+import { BlogLoadingChild } from "@/components/BlogLoading";
 import BlogOptions from "@/components/BlogOptions";
 import Container from "@/components/Container";
 import AvatarDemo from "@/components/header/Avatar";
@@ -8,50 +9,53 @@ import { deleteBlog } from "@/components/queries/queries";
 import { useBlogDetails, useUserDetails } from "@/hooks/blogs/use-blog";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const session = useSession();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   // User Details
   const { data } = useUserDetails(session?.data?.user?.email || "");
 
   // Blog details
-  const { data: BlogData } = useBlogDetails(id);
+  const { data: BlogData, isLoading } = useBlogDetails(id);
 
   // hook for formating the User's account creation date
   const formattedDate = useFormatDate(BlogData?.blog?.createdAt || "");
 
-  // for deleting blog
-  const handleBlogDelete = async (id: string) => {
-    // const ans = confirm("Are you sure you want to Delete");
-    // if (ans) {
-    //   try {
-    //     const response = await axios.delete(
-    //       `http://localhost:3000/api/blogs/delete/${id}`
-    //     );
-    //     if (response.status === 200) {
-    //       alert("Blog deleted Successfully :)");
-    //     }
-    //   } catch (error: any) {
-    //     alert(error?.message);
-    //   }
-    // }
-    const { mutate, isLoading } = useMutation({
-      mutationFn: () => deleteBlog(id),
-      onSuccess: () => {
-        alert("Blog deleted Successfully");
-        queryClient.invalidateQueries(["blogs"]);
-      },
-      onError: () => alert("something went wrong try again"),
-    });
+  // muation function for deleting blog
+  const { mutate: DeleteBlog } = useMutation({
+    mutationFn: deleteBlog,
+    onSuccess: () => {
+      alert("Blog deleted Successfully");
+      queryClient.invalidateQueries(["blogs"]);
+      router.push("/");
+    },
+    onError: () => alert("something went wrong try again"),
+  });
 
-    mutate();
+  // for deleting blog
+  const handleBlogDelete = (id: string) => {
+    DeleteBlog(id);
   };
+
+  if (isLoading) {
+    return (
+      <Container>
+        <div className="mt-10">
+          <BlogLoadingChild />
+          <div className="w-[100px] mx-auto">
+            <Loader2 className="w-16 h-16 text-gray-400 mt-20 animate-spin" />
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -60,9 +64,10 @@ const page = ({ params }: { params: { id: string } }) => {
           <div className="mt-2 flex justify-between items-center gap-2 border-b border-zinc-400">
             <div className="flex gap-2 items-center mb-5">
               <AvatarDemo
-                image={`${BlogData?.blog?.user?.image}`}
+                image={BlogData?.blog?.user?.image || ""}
                 id={BlogData?.blog?.user?._id || ""}
               />
+
               <div className="flex flex-col">
                 <p className="text-[0.85rem] font-semibold tracking-wide">
                   {BlogData?.blog?.user?.name}
@@ -72,7 +77,7 @@ const page = ({ params }: { params: { id: string } }) => {
             </div>
             {BlogData?.blog?.user._id === data?.userData[0]?._id ? (
               <BlogOptions
-                onDelete={handleBlogDelete}
+                onDelete={() => handleBlogDelete(BlogData?.blog._id || "")}
                 id={BlogData?.blog?._id || ""}
                 blogId={BlogData?.blog?._id || ""}
               />

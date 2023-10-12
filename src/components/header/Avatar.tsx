@@ -11,15 +11,17 @@ const AvatarDemo = ({ image, id }: { image: string; id: string }) => {
       className="cursor-pointer"
       onClick={() => router.push(`/profile/${id}`)}
     >
-      <AvatarImage src={image} alt="shadcn" />
-      <AvatarFallback>
+      {image === "" || image === null || image === undefined ? (
+        <div className="relative block w-[100px] h-[100px] bg-gray-700 rounded-full animate-pulse"></div>
+      ) : (
         <Image
-          width={30}
-          height={30}
-          src="https://img.icons8.com/ios-glyphs/30/person-male.png"
-          alt="user avatar"
+          src={image || ""}
+          width={50}
+          height={50}
+          alt="profile picture"
+          className="bg-gray-700"
         />
-      </AvatarFallback>
+      )}
     </Avatar>
   );
 };
