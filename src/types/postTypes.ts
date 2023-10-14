@@ -14,7 +14,7 @@ export const blogSchema = z.object({
 
 export type TBlogSchema = z.infer<typeof blogSchema>;
 
-// All blogs GET response ..
+// All blogs GET response ...
 type UserDetail = {
   _id: string;
   name: string;
