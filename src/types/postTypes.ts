@@ -66,3 +66,8 @@ export type ProfileResponse = {
   message: string;
   userData: UserDetail[];
 };
+
+export type ProfileDetails = {
+  message: string;
+  userData: UserDetail;
+};

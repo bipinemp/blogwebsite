@@ -47,3 +47,23 @@ export const deleteBlog = async (id: string) => {
     return error;
   }
 };
+
+// for getting user's profile details using id
+export const fetchUserProfile = async (id: string) => {
+  try {
+    const response = await axios.get(`${PROFILE_BASE_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+// for getting the user's all blogs
+export const fetchUserBlogs = async (id: string) => {
+  try {
+    const response = await axios.get(`${BLOG_BASE_URL}/readuserblogs/${id}`);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
