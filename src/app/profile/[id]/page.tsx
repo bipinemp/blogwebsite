@@ -7,17 +7,32 @@ import { Loader2 } from "lucide-react";
 import BlogDetails from "@/components/BlogDetails";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useFetchUserBlogs, useUserProfile } from "@/hooks/blogs/use-blog";
+import { UserProfileLoading } from "@/components/BlogLoading";
 
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
+  // for user profild details like name image
   const { userData, isLoading } = useUserProfile(id);
-  const { data: AllBlogs } = useFetchUserBlogs(id);
+  // for user's specific blogs
+  const { data: AllBlogs, isLoading: BlogsLoading } = useFetchUserBlogs(id);
 
   if (isLoading) {
     return (
       <Container>
-        <h1>Loading User Profile</h1>
+        <UserProfileLoading />
+      </Container>
+    );
+  }
+
+  if (!isLoading && BlogsLoading) {
+    return (
+      <Container>
+        <div className="mt-20">
+          <div className="w-[100px] mx-auto">
+            <Loader2 className="w-16 h-16 text-gray-400 mt-20 animate-spin" />
+          </div>
+        </div>
       </Container>
     );
   }
@@ -27,7 +42,7 @@ const page = ({ params }: { params: { id: string } }) => {
   return (
     <Container>
       <div className="flex flex-col gap-10 mt-10">
-        <div className="flex flex-col gap-4 items-center border-[2px] p-3 rounded-lg">
+        <div className="min-h-[200px] flex flex-col gap-4 items-center border-[2px] p-3 rounded-lg">
           <div>
             {userData?.image !== undefined ? (
               <Image

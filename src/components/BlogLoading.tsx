@@ -19,6 +19,16 @@ export const BlogLoadingChild = () => {
   );
 };
 
+export const UserProfileLoading = () => {
+  return (
+    <div className="h-[210px] flex mt-10 flex-col gap-4 items-center border-[2px] p-3 rounded-lg">
+      <div className="w-[100px] h-[100px] bg-gray-700 animate-pulse rounded-full"></div>
+      <h1 className="w-[170px] h-[25px] bg-gray-700 animate-pulse rounded-md"></h1>
+      <h1 className="w-[130px] h-[25px] bg-gray-700 animate-pulse rounded-md"></h1>
+    </div>
+  );
+};
+
 function BlogLoading() {
   return (
     <div className="mx-auto mt-20 max-w-5xl px-6">
