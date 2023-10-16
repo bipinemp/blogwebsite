@@ -7,7 +7,7 @@ const PROFILE_BASE_URL = "http://localhost:3000/api/profile";
 export const fetchAllBlogs = async (pageParam: number) => {
   try {
     const response = await axios.get(
-      `${BLOG_BASE_URL}/readall?page=${pageParam}&limit=${10}`
+      `${BLOG_BASE_URL}/readall?page=${pageParam}`
     );
     const data = response.data;
     return data;

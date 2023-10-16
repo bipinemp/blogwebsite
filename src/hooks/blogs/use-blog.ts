@@ -34,23 +34,25 @@ export const useBlogDetails = (id: string) => {
 };
 
 // for fetching user profile details
-export const useUserProfile = (id: string) => {
-  const { data, isLoading, isError, error } = useQuery<ProfileDetails>({
-    queryKey: ["userprofile"],
-    queryFn: () => fetchUserProfile(id),
-  });
+export const useUserProfileDetails = (id: string) => {
+  const { data: userData, isLoading: profileLoading } =
+    useQuery<ProfileDetails>({
+      queryKey: ["userprofile", id],
+      queryFn: () => fetchUserProfile(id),
+    });
 
-  const userData = data?.userData;
-
-  return { userData, isLoading, isError, error };
-};
-
-// for fetching user's all personal blogs
-export const useFetchUserBlogs = (id: string) => {
-  const { data, isLoading, isError, error } = useQuery<Blogs>({
-    queryKey: ["userblogs"],
+  const { data: userBlogs, isLoading: blogsLoading } = useQuery<Blogs>({
+    queryKey: ["userblogs", userData?.userData?._id],
     queryFn: () => fetchUserBlogs(id),
+    enabled: userData?.userData?._id !== null,
   });
 
-  return { data, isLoading, isError, error };
+  const userDataa = userData?.userData;
+
+  return {
+    userDataa,
+    profileLoading,
+    userBlogs,
+    blogsLoading,
+  };
 };
