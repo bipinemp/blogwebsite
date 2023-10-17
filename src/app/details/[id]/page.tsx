@@ -39,6 +39,7 @@ const page = ({ params }: { params: { id: string } }) => {
     onError: () => alert("something went wrong try again"),
   });
 
+
   // for deleting blog
   const handleBlogDelete = (id: string) => {
     DeleteBlog(id);
