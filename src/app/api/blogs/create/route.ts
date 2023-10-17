@@ -16,8 +16,8 @@ type UserData = {
 };
 
 export async function POST(req: NextRequest) {
-  const { title, body } = await req.json();
-  const data = { title, body };
+  const { title, description, body } = await req.json();
+  const data = { title, description, body };
   const token = await getToken({ req });
   const userDetails = (await User.findOne({ email: token?.email })) as UserData;
 
@@ -29,7 +29,12 @@ export async function POST(req: NextRequest) {
     const { title, body } = validatedData;
 
     // Saving to Database
-    const blog = await Blog.create({ user: userDetails?._id, title, body });
+    const blog = await Blog.create({
+      user: userDetails?._id,
+      title,
+      description,
+      body,
+    });
 
     // Sending Success message
     return NextResponse.json(

@@ -39,7 +39,6 @@ const page = ({ params }: { params: { id: string } }) => {
     onError: () => alert("something went wrong try again"),
   });
 
-
   // for deleting blog
   const handleBlogDelete = (id: string) => {
     DeleteBlog(id);
@@ -85,12 +84,19 @@ const page = ({ params }: { params: { id: string } }) => {
             ) : null}
           </div>
 
-          <div className="mt-10 flex flex-col gap-2">
-            <h1 className="font-bold text-2xl tracking-wide flex gap-1 items-center">
+          <div className="mt-10 flex flex-col gap-3">
+            <h1 className="font-bold text-5xl tracking-wide flex gap-1 items-center">
               <ChevronRight className="w-4 h-4 font-bold" />
               {BlogData?.blog?.title}
             </h1>
-            <p className="pl-5 opacity-80">{BlogData?.blog?.body}</p>
+            <p className="pl-5 mb-4 opacity-80 italic">
+              "{BlogData?.blog?.description}"
+            </p>
+            <hr />
+            <div
+              className="ql-editor pl-5 opacity-80"
+              dangerouslySetInnerHTML={{ __html: BlogData?.blog?.body || "" }}
+            />
           </div>
         </div>
         <AddComment

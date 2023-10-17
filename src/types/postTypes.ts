@@ -6,6 +6,11 @@ export const blogSchema = z.object({
     .nonempty("Title is required")
     .min(10, "Title is too short (minimum is 10 characters long)")
     .max(128, "Title is too Long (maximum is 128 characters)"),
+  description: z
+    .string()
+    .nonempty("Description is required")
+    .min(10, "Description is too short (minimum is 10 characters long)")
+    .max(50, "Description is too long (maximum is 30 characters)"),
   body: z
     .string()
     .nonempty("Body is required")
@@ -13,7 +18,6 @@ export const blogSchema = z.object({
 });
 
 export type TBlogSchema = z.infer<typeof blogSchema>;
-
 
 // All blogs GET response
 export type UserDetail = {
@@ -44,7 +48,8 @@ export type Blog = {
   _id: string;
   user: UserDetail;
   title: string;
-  body: string;
+  body: string | TrustedHTML;
+  description: string;
   edited: boolean;
   createdAt: string;
   updatedAt: string;

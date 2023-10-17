@@ -68,11 +68,6 @@ export default function Blogs() {
                 className="text-center m-2 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-gray-300 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                 role="status"
               ></div>
-            ) : (blogs?.length ?? 0) < 10 ? (
-              <div
-                className="text-center m-2 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-gray-300 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                role="status"
-              ></div>
             ) : (
               <span className="text-red-400">No More Blogs :(</span>
             )}

@@ -35,6 +35,31 @@
     --radius: 0.5rem;
   }
 
+  a em {
+    @apply underline text-blue-400 cursor-pointer;
+  }
+  ol {
+    @apply list-decimal pl-[0.95rem];
+  }
+  ul {
+    @apply list-disc pl-[0.95rem];
+  }
+  h1 {
+    @apply text-[2rem];
+  }
+  h2 {
+    @apply text-[1.5rem];
+  }
+  h3 {
+    @apply text-[1.17rem];
+  }
+  h4 {
+    @apply text-[1rem];
+  }
+  h5 {
+    @apply text-[0.83rem];
+  }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -73,4 +98,37 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.ql-toolbar .ql-formats .ql-stroke {
+  @apply stroke-gray-400;
+}
+
+.ql-toolbar .ql-formats .ql-fill {
+  @apply fill-gray-400;
+}
+
+.ql-snow .ql-picker-label {
+  @apply before:text-gray-400;
+}
+
+.quill {
+  @apply h-[250px];
+}
+
+.ql-size-huge {
+  @apply text-[2.8rem];
+}
+.ql-size-large {
+  @apply text-[1.9rem];
+}
+.ql-size-normal {
+  @apply text-[1.5rem];
+}
+.ql-size-small {
+  @apply text-[0.8rem];
+}
+
+.ql-editor .ql-syntax {
+  @apply bg-black/80 text-white rounded-md py-3 px-5;
 }

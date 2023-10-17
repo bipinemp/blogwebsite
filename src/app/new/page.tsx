@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TBlogSchema, blogSchema } from "@/types/postTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const page: React.FC = () => {
   const router = useRouter();
@@ -19,6 +21,7 @@ const page: React.FC = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
   } = useForm<TBlogSchema>({
@@ -29,7 +32,11 @@ const page: React.FC = () => {
     handleCreateBlog(data);
   };
 
-  async function handleCreateBlog(data: { title: string; body: string }) {
+  async function handleCreateBlog(data: {
+    title: string;
+    body: string;
+    description: string;
+  }) {
     setIsSubmitting(true);
     try {
       const response = await axios.post("/api/blogs/create", data);
@@ -45,9 +52,26 @@ const page: React.FC = () => {
     }
   }
 
+  const toolbarOptions = [
+    ["bold", "italic", "underline"],
+    ["code-block"],
+    [{ header: 1 }, { header: 2 }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["link"],
+  ];
+
+  const module = {
+    toolbar: toolbarOptions,
+    clipboard: {
+      matchVisual: false,
+    },
+  };
+
   return (
     <Container>
-      <div className="mt-10 max-w-[400px] mx-auto flex flex-col gap-4 items-center">
+      <div className="mt-10 max-w-[900px] mx-auto flex flex-col gap-4 items-center">
         <h1 className="font-bold tracking-wider text-xl">Create Blog</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -57,16 +81,40 @@ const page: React.FC = () => {
             {...register("title")}
             type="text"
             placeholder="Title..."
-            className="border-zinc-500"
+            className="border-zinc-500 text-lg"
           />
           {errors?.title ? (
             <span className="text-red-500 text-sm">{`${errors?.title.message}`}</span>
           ) : null}
-          <Textarea
-            {...register("body")}
-            placeholder="Write the content here..."
-            className="border-zinc-500"
+          <Input
+            {...register("description")}
+            type="text"
+            placeholder="Description..."
+            className="border-zinc-500 text-lg"
           />
+
+          {errors?.description ? (
+            <span className="text-red-500 text-sm">{`${errors?.description.message}`}</span>
+          ) : null}
+
+          <div className="relative h-[300px]">
+            <Controller
+              name="body"
+              control={control}
+              render={({ field }) => (
+                <ReactQuill
+                  modules={{
+                    toolbar: toolbarOptions,
+                    clipboard: {
+                      matchVisual: false,
+                    },
+                  }}
+                  theme="snow"
+                  {...field}
+                />
+              )}
+            />
+          </div>
           {errors?.body ? (
             <span className="text-red-500 text-sm">{`${errors?.body.message}`}</span>
           ) : null}

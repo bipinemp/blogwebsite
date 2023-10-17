@@ -156,7 +156,7 @@ export default function BlogDetails({ blog }: BlogProps) {
             {blog?.edited ? "(edited)" : null}
           </span>
         </h1>
-        <p className="pl-5 opacity-80">{blog?.body}</p>
+        <p className="pl-5 opacity-80">{blog?.description}</p>
       </div>
       <div className="flex gap-5 items-center pl-5">
         <div className="flex gap-1 items-center opacity-80">
@@ -169,7 +169,7 @@ export default function BlogDetails({ blog }: BlogProps) {
               upvoted ? "fill-green-500 stroke-green-500" : ""
             } w-9 h-9 hover:bg-neutral-800 p-[0.2rem] rounded-full transition`}
           />
-          <h1>{actualVote} </h1>
+          <h3>{actualVote} </h3>
           <ArrowBigDown
             onClick={(e) => {
               handleDownvote();
