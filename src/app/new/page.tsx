@@ -3,8 +3,6 @@
 import Container from "@/components/Container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TBlogSchema, blogSchema } from "@/types/postTypes";
@@ -102,16 +100,7 @@ const page: React.FC = () => {
               name="body"
               control={control}
               render={({ field }) => (
-                <ReactQuill
-                  modules={{
-                    toolbar: toolbarOptions,
-                    clipboard: {
-                      matchVisual: false,
-                    },
-                  }}
-                  theme="snow"
-                  {...field}
-                />
+                <ReactQuill modules={module} theme="snow" {...field} />
               )}
             />
           </div>
