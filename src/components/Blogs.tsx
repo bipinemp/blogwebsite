@@ -17,7 +17,7 @@ export default function Blogs() {
     threshold: 1,
   });
 
-  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
+  const { data, isLoading, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery({
       queryKey: ["blogs"],
       queryFn: ({ pageParam = 1 }) => fetchAllBlogs(pageParam),
