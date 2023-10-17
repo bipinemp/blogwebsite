@@ -5,7 +5,7 @@ import { Blogs } from "@/types/postTypes";
 import BlogDetails from "./BlogDetails";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchAllBlogs } from "./queries/queries";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import BlogLoading from "./BlogLoading";
 
@@ -17,14 +17,11 @@ export default function Blogs() {
     threshold: 1,
   });
 
-  const { data, isLoading, isFetchingNextPage, fetchNextPage } =
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: ["blogs"],
       queryFn: ({ pageParam = 1 }) => fetchAllBlogs(pageParam),
-      getNextPageParam: (lastPage, pages) => {
-        // const maxPages = lastPage.totalBlogs / 10;
-        // const nextPage = pages.length + 1;
-        // return nextPage <= maxPages ? nextPage : undefined;
+      getNextPageParam: (_, pages) => {
         return pages.length + 1;
       },
     });
@@ -42,6 +39,8 @@ export default function Blogs() {
   const BlogsData = data?.pages.map((page) => page);
   const blogs = BlogsData?.flatMap((blog) => blog.blogs);
 
+  console.log(blogs);
+
   if (blogs?.flat().length === 0) {
     return <h1>No Blogs available :)</h1>;
   }
@@ -54,10 +53,13 @@ export default function Blogs() {
         </h1>
         <section className="flex flex-col gap-4 mb-10">
           {blogs?.flatMap((blog, i) => {
-            if (i === blogs?.length - 1) {
-              return <div key={blog._id} ref={ref}></div>;
-            }
-            return <BlogDetails blog={blog} key={blog._id} />;
+            const isLast = i === blogs?.length - 1;
+            return (
+              <Fragment key={blog._id}>
+                <BlogDetails blog={blog} key={blog._id} />
+                {isLast && <div key={blog._id} ref={ref}></div>}
+              </Fragment>
+            );
           })}
 
           <span className="relative w-full text-center text-xl m-2">

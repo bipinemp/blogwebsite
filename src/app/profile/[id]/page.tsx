@@ -23,20 +23,6 @@ const page = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  if (userDataa) {
-    if (blogsLoading) {
-      return (
-        // <Container>
-        <div className="mt-96">
-          <div className="w-[100px] mx-auto">
-            <Loader2 className="w-16 h-16 text-gray-400 mt-20 animate-spin" />
-          </div>
-        </div>
-        // </Container>
-      );
-    }
-  }
-
   const formattedDate = useFormatDate(`${userDataa?.createdAt}`);
 
   return (
@@ -60,6 +46,14 @@ const page = ({ params }: { params: { id: string } }) => {
             {formattedDate}
           </h1>
         </div>
+
+        {!profileLoading && blogsLoading ? (
+          <div className="mt-7">
+            <div className="w-[100px] mx-auto">
+              <Loader2 className="w-16 h-16 text-gray-400 mt-20 animate-spin" />
+            </div>
+          </div>
+        ) : null}
 
         <div className="flex gap-5 justify-between">
           {userBlogs?.blogs ? (
