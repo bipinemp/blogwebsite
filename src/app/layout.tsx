@@ -7,6 +7,7 @@ import SessionProvider from "@/components/auth/SessionProvider";
 
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import QueryProvider from "@/providers/QueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,12 +29,14 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className}`}>
-        <SessionProvider session={session}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Navbar />
-            {children}
-          </ThemeProvider>
-        </SessionProvider>
+        <QueryProvider>
+          <SessionProvider session={session}>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <Navbar />
+              {children}
+            </ThemeProvider>
+          </SessionProvider>
+        </QueryProvider>
       </body>
     </html>
   );

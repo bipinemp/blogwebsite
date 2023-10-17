@@ -22,19 +22,17 @@ const UserMenu = ({ session }: any) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage
-            src={`${session[0].image}`}
-            alt="shadcn"
-            className="w-10 h-10 rounded-full"
-          />
-          <AvatarFallback>
+          {session[0].image === "" || session[0].image === undefined ? (
+            <div className="relative block w-[50px] h-[50px] bg-gray-700 rounded-full animate-pulse"></div>
+          ) : (
             <Image
-              width={30}
-              height={30}
-              src="https://img.icons8.com/ios-glyphs/30/person-male.png"
-              alt="user avatar"
+              src={session[0].image || ""}
+              width={40}
+              height={40}
+              alt="profile picture"
+              className="bg-gray-700 rounded-full cursor-pointer"
             />
-          </AvatarFallback>
+          )}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-fit mr-24">

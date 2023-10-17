@@ -4,21 +4,20 @@ import { useEffect, useState } from "react";
 import AvatarDemo from "./header/Avatar";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { ProfileResponse } from "./BlogDetails";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { BlogDetail } from "@/app/details/[id]/page";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useRouter } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 import { Textarea } from "./ui/textarea";
+import { Blog, BlogDetail, ProfileResponse } from "@/types/postTypes";
 
 export default function AddComment({
   blogId,
   blogDetails,
 }: {
   blogId: string;
-  blogDetails: BlogDetail | null | undefined;
+  blogDetails: Blog | null;
 }) {
   const router = useRouter();
   const session = useSession();
@@ -223,7 +222,10 @@ export default function AddComment({
             <div className="border-l-[2px] ml-10">
               {comment.replies &&
                 comment.replies.map((reply) => (
-                  <div className="mt-5 ml-4 flex flex-col gap-0 border-[2px] rounded-lg py-3 pl-5">
+                  <div
+                    key={reply?._id}
+                    className="mt-5 ml-4 flex flex-col gap-0 border-[2px] rounded-lg py-3 pl-5"
+                  >
                     <div className="flex gap-3 items-center">
                       <AvatarDemo
                         image={reply?.user?.image || ""}

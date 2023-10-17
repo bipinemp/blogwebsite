@@ -1,107 +1,62 @@
 "use client";
 
 import AddComment from "@/components/AddComment";
-import { ProfileResponse } from "@/components/BlogDetails";
+import { BlogLoadingChild } from "@/components/BlogLoading";
 import BlogOptions from "@/components/BlogOptions";
 import Container from "@/components/Container";
 import AvatarDemo from "@/components/header/Avatar";
+import { deleteBlog } from "@/components/queries/queries";
+import { useBlogDetails, useUserDetails } from "@/hooks/blogs/use-blog";
 import { useFormatDate } from "@/hooks/useFormatDate";
-import axios from "axios";
-import { ChevronRight } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ChevronRight, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-
-type UserDetail = {
-  _id: string | null | undefined;
-  name: string;
-  email: string;
-  image: string;
-  emailVerified: string | null;
-  createdAt: string;
-};
-
-export type ReplyType = {
-  user: UserDetail;
-  reply: string;
-  _id: string;
-  createdAt: string;
-};
-
-export type CommentType = {
-  user: UserDetail;
-  comment: string;
-  _id: string;
-  replies: ReplyType[];
-  createdAt: string;
-};
-
-export type BlogDetail = {
-  _id: string;
-  user: UserDetail;
-  title: string;
-  body: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  comments: CommentType[];
-  likes: [];
-};
-export type BlogDetailsType = {
-  message: string;
-  blog: BlogDetail;
-};
+import { useRouter } from "next/navigation";
 
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const session = useSession();
-  const [blogDetails, setBlogDetails] = useState<BlogDetail | null>(null);
-  const [userId, setUserId] = useState<string>("");
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
-  useEffect(() => {
-    if (session?.status === "authenticated") {
-      const getProfile = async () => {
-        const response = await axios.get<ProfileResponse>(
-          `http://localhost:3000/api/profile/email/${session?.data?.user?.email}`
-        );
-        if (response.status === 200) {
-          const id = response?.data?.userData[0]?._id;
+  // User Details
+  const { data } = useUserDetails(session?.data?.user?.email || "");
 
-          if (id) {
-            setUserId(id);
-          }
-        }
-      };
-      getProfile();
-    }
-  }, [session]);
+  // Blog details
+  const { data: BlogData, isLoading } = useBlogDetails(id);
 
-  useEffect(() => {
-    const getBlogDetails = async (id: string) => {
-      const response = await axios.get<BlogDetailsType>(
-        `http://localhost:3000/api/blogs/details/${id}`
-      );
-      setBlogDetails(response?.data?.blog);
-    };
-    getBlogDetails(id);
-  }, [id]);
+  // hook for formating the User's account creation date
+  const formattedDate = useFormatDate(BlogData?.blog?.createdAt || "");
 
-  const formattedDate = useFormatDate(blogDetails?.createdAt || "");
+  // muation function for deleting blog
+  const { mutate: DeleteBlog } = useMutation({
+    mutationFn: deleteBlog,
+    onSuccess: () => {
+      alert("Blog deleted Successfully");
+      queryClient.invalidateQueries(["blogs"]);
+      router.push("/");
+    },
+    onError: () => alert("something went wrong try again"),
+  });
 
-  const handleBlogDelete = async (id: string) => {
-    const ans = confirm("Are you sure you want to Delete");
-    if (ans) {
-      try {
-        const response = await axios.delete(
-          `http://localhost:3000/api/blogs/delete/${id}`
-        );
-        if (response.status === 200) {
-          alert("Blog deleted Successfully :)");
-        }
-      } catch (error: any) {
-        alert(error?.message);
-      }
-    }
+
+  // for deleting blog
+  const handleBlogDelete = (id: string) => {
+    DeleteBlog(id);
   };
+
+  if (isLoading) {
+    return (
+      <Container>
+        <div className="mt-10">
+          <BlogLoadingChild />
+          <div className="w-[100px] mx-auto">
+            <Loader2 className="w-16 h-16 text-gray-400 mt-20 animate-spin" />
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -110,36 +65,37 @@ const page = ({ params }: { params: { id: string } }) => {
           <div className="mt-2 flex justify-between items-center gap-2 border-b border-zinc-400">
             <div className="flex gap-2 items-center mb-5">
               <AvatarDemo
-                image={`${blogDetails?.user?.image}`}
-                id={blogDetails?.user?._id || ""}
+                image={BlogData?.blog?.user?.image || ""}
+                id={BlogData?.blog?.user?._id || ""}
               />
+
               <div className="flex flex-col">
                 <p className="text-[0.85rem] font-semibold tracking-wide">
-                  {blogDetails?.user?.name}
+                  {BlogData?.blog?.user?.name}
                 </p>
                 <p className="text-[0.7rem] italic">{formattedDate}</p>
               </div>
             </div>
-            {blogDetails?.user._id === userId ? (
+            {BlogData?.blog?.user._id === data?.userData[0]?._id ? (
               <BlogOptions
-                onDelete={handleBlogDelete}
-                id={blogDetails?._id}
-                blogId={blogDetails?._id}
+                onDelete={() => handleBlogDelete(BlogData?.blog._id || "")}
+                id={BlogData?.blog?._id || ""}
+                blogId={BlogData?.blog?._id || ""}
               />
             ) : null}
           </div>
 
           <div className="mt-10 flex flex-col gap-2">
             <h1 className="font-bold text-2xl tracking-wide flex gap-1 items-center">
-              <ChevronRight className="w-4 h-4 font-bold" />{" "}
-              {blogDetails?.title}
+              <ChevronRight className="w-4 h-4 font-bold" />
+              {BlogData?.blog?.title}
             </h1>
-            <p className="pl-5 opacity-80">{blogDetails?.body}</p>
+            <p className="pl-5 opacity-80">{BlogData?.blog?.body}</p>
           </div>
         </div>
         <AddComment
-          blogId={blogDetails?._id || ""}
-          blogDetails={blogDetails || null || undefined}
+          blogId={BlogData?.blog?._id || ""}
+          blogDetails={BlogData?.blog || null}
         />
       </section>
     </Container>
