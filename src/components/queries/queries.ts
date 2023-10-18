@@ -1,7 +1,19 @@
+import { TBlogSchema } from "@/types/postTypes";
 import axios from "axios";
 
 const BLOG_BASE_URL = "http://localhost:3000/api/blogs";
 const PROFILE_BASE_URL = "http://localhost:3000/api/profile";
+
+// for creating a new blog
+export const createNewBlog = async (blogData: TBlogSchema) => {
+  try {
+    const response = await axios.post("/api/blogs/create", blogData);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
 // for fetching all blogs the Feed of website
 export const fetchAllBlogs = async (pageParam: number) => {

@@ -32,8 +32,8 @@ const page = ({ params }: { params: { id: string } }) => {
   const { mutate: DeleteBlog } = useMutation({
     mutationFn: deleteBlog,
     onSuccess: () => {
-      alert("Blog deleted Successfully");
       queryClient.invalidateQueries(["blogs"]);
+      alert("Blog deleted Successfully");
       router.push("/");
     },
     onError: () => alert("something went wrong try again"),

@@ -6,14 +6,14 @@ import { Input } from "@/components/ui/input";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TBlogSchema, blogSchema } from "@/types/postTypes";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { SurveyFormClipboard } from "@/lib/PlainClipboard";
 import { Quill } from "react-quill";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createNewBlog } from "@/components/queries/queries";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -26,7 +26,8 @@ Quill.register("modules/clipboard", SurveyFormClipboard, true);
 
 const page: React.FC = () => {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -35,6 +36,20 @@ const page: React.FC = () => {
     reset,
   } = useForm<TBlogSchema>({
     resolver: zodResolver(blogSchema),
+  });
+
+  // mutation function for creating blog
+  const { mutate: CreateBlog, isLoading: CreatingBlog } = useMutation({
+    mutationFn: createNewBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+      alert("Blog Created Successfully");
+      reset();
+    },
+    onSettled(data) {
+      router.push(`/details/${data?.blog._id}`);
+    },
+    onError: () => alert("Something went wrong try again"),
   });
 
   const onSubmit = (data: TBlogSchema) => {
@@ -46,19 +61,7 @@ const page: React.FC = () => {
     body: string;
     description: string;
   }) {
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post("/api/blogs/create", data);
-      if (response?.status === 201) {
-        alert("Blog Created Successfully");
-      }
-      router.refresh();
-      reset();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    CreateBlog(data);
   }
 
   const toolbarOptions = [
@@ -111,7 +114,12 @@ const page: React.FC = () => {
               name="body"
               control={control}
               render={({ field }) => (
-                <ReactQuill modules={module} theme="snow" {...field} />
+                <ReactQuill
+                  modules={module}
+                  theme="snow"
+                  value={field.value}
+                  onChange={field.onChange}
+                />
               )}
             />
           </div>
@@ -119,12 +127,12 @@ const page: React.FC = () => {
             <span className="text-red-500 text-sm">{`${errors?.body.message}`}</span>
           ) : null}
           <Button
-            disabled={isSubmitting}
+            disabled={CreatingBlog}
             variant="default"
             size="lg"
             className="font-bold tracking-wider text-[1rem]"
           >
-            {isSubmitting ? (
+            {CreatingBlog ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               "Create Post"

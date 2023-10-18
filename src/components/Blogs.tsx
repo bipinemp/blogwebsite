@@ -54,9 +54,9 @@ export default function Blogs() {
             const isLast = i === blogs?.length - 1;
 
             return (
-              <Fragment key={`blog-${blog._id}`}>
-                <BlogDetails blog={blog} key={blog._id} />
-                {isLast && <div key={blog.user._id} ref={ref}></div>}
+              <Fragment key={`blog-${blog?._id}`}>
+                <BlogDetails blog={blog} key={blog?._id} />
+                {isLast && <div key={blog?.user?._id} ref={ref}></div>}
               </Fragment>
             );
           })}

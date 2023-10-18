@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
       .populate({ path: "upvotes", model: User })
       .populate({ path: "downvotes", model: User })
       .skip(skip)
-      .limit(limit);
-    // .sort({ createdAt: -1 });
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     return NextResponse.json(
       { message: "All Blogs fetched", blogs, totalBlogs },

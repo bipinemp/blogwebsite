@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     // Validating the input using zod
     const validatedData = blogSchema.parse(data);
-    const { title, body } = validatedData;
+    const { title, body, description } = validatedData;
 
     // Saving to Database
     const blog = await Blog.create({
