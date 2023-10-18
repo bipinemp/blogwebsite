@@ -120,7 +120,7 @@
   @apply text-[2.8rem];
 }
 .ql-size-large {
-  @apply text-[1.9rem];
+  @apply text-[1.5rem];
 }
 .ql-size-normal {
   @apply text-[1.5rem];

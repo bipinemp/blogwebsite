@@ -17,6 +17,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Writz",
   description: "Blog website for software developers",
+  icons: {
+    icon: ["/writz.png?v=4"],
+  },
 };
 
 export default async function RootLayout({

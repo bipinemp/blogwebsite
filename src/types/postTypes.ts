@@ -48,7 +48,7 @@ export type Blog = {
   _id: string;
   user: UserDetail;
   title: string;
-  body: string | TrustedHTML;
+  body: string;
   description: string;
   edited: boolean;
   createdAt: string;

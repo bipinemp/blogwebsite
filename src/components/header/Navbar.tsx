@@ -9,16 +9,16 @@ import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ProfileProps, UserData } from "@/app/profile/[id]/page";
+import { ProfileDetails, UserDetail } from "@/types/postTypes";
 
 const Navbar: React.FC = () => {
   const session = useSession();
-  const [profileData, setProfileData] = useState<UserData>();
+  const [profileData, setProfileData] = useState<UserDetail>();
 
   useEffect(() => {
     if (session?.data?.user) {
       const getProfile = async () => {
-        const response = await axios.get<ProfileProps>(
+        const response = await axios.get<ProfileDetails>(
           `http://localhost:3000/api/profile/email/${session?.data?.user?.email}`
         );
         setProfileData(response?.data?.userData);

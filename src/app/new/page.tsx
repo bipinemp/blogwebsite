@@ -74,7 +74,6 @@ const page: React.FC = () => {
   const module = {
     toolbar: toolbarOptions,
     clipboard: {
-      // toggle to add extra line breaks when pasting HTML:
       matchVisual: true,
     },
   };

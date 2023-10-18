@@ -18,7 +18,7 @@ export default function Blogs() {
   });
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage } =
-    useInfiniteQuery({
+    useInfiniteQuery<Blogs>({
       queryKey: ["blogs"],
       queryFn: ({ pageParam = 1 }) => fetchAllBlogs(pageParam),
       getNextPageParam: (_, pages) => {
@@ -39,8 +39,6 @@ export default function Blogs() {
   const BlogsData = data?.pages.map((page) => page);
   const blogs = BlogsData?.flatMap((blog) => blog.blogs);
 
-  console.log(blogs);
-
   if (blogs?.flat().length === 0) {
     return <h1>No Blogs available :)</h1>;
   }
@@ -54,10 +52,11 @@ export default function Blogs() {
         <section className="flex flex-col gap-4 mb-10">
           {blogs?.flatMap((blog, i) => {
             const isLast = i === blogs?.length - 1;
+
             return (
-              <Fragment key={blog._id}>
+              <Fragment key={`blog-${blog._id}`}>
                 <BlogDetails blog={blog} key={blog._id} />
-                {isLast && <div key={blog._id} ref={ref}></div>}
+                {isLast && <div key={blog.user._id} ref={ref}></div>}
               </Fragment>
             );
           })}
