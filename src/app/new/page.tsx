@@ -10,8 +10,19 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import ReactQuill from "react-quill";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import { SurveyFormClipboard } from "@/lib/PlainClipboard";
+import { Quill } from "react-quill";
+
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[300px] max-w-[900px] bg-gray-800 animate-pulse rounded-md"></div>
+  ),
+});
+
+Quill.register("modules/clipboard", SurveyFormClipboard, true);
 
 const page: React.FC = () => {
   const router = useRouter();
@@ -63,7 +74,8 @@ const page: React.FC = () => {
   const module = {
     toolbar: toolbarOptions,
     clipboard: {
-      matchVisual: false,
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: true,
     },
   };
 
