@@ -60,17 +60,18 @@ export const deleteBlog = async (id: string) => {
   }
 };
 
-type BlogDataType = {
+type BLOGDATATYPE = {
+  blogId: string;
   title: string;
-  body: string;
   description: string;
+  body: string;
 };
 
 // for updating Blog
-export const updateBlog = async (blogId: string, dataa: BlogDataType) => {
+export const updateBlog = async (dataa: BLOGDATATYPE) => {
   try {
     const response = await axios.patch(
-      `${BLOG_BASE_URL}/edit/${blogId}`,
+      `${BLOG_BASE_URL}/edit/${dataa.blogId}`,
       dataa
     );
     const data = response.data;

@@ -3,7 +3,6 @@
 import Container from "@/components/Container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import dynamic from "next/dynamic";
@@ -11,6 +10,7 @@ import "react-quill/dist/quill.snow.css";
 import { useBlogDetails } from "@/hooks/blogs/use-blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateBlog } from "@/components/queries/queries";
+import { Loader2 } from "lucide-react";
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => (
@@ -36,8 +36,9 @@ const page = ({ params }: { params: { id: string } }) => {
       queryClient.invalidateQueries(["blogs"]);
       alert("Blog Updated Successfully");
     },
-    onSettled(data, error) {
-      console.log(data + " Error: " + error);
+    onSettled(data) {
+      router.push(`/details/${data?.updatedBlog?._id}`);
+      // console.log(JSON.stringify(data));
     },
     onError: () => alert("Something went wrong try again"),
   });
@@ -65,9 +66,8 @@ const page = ({ params }: { params: { id: string } }) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const blogDataa = { title, body, description };
-
-    UpdateBlog({ blogId, ...blogDataa });
+    const blogDataa = { blogId, title, body, description };
+    UpdateBlog(blogDataa);
   };
 
   const toolbarOptions = [
@@ -120,11 +120,16 @@ const page = ({ params }: { params: { id: string } }) => {
           </div>
 
           <Button
+            disabled={UpdatingBlog}
             variant="default"
             size="lg"
             className="font-bold tracking-wider text-[1rem]"
           >
-            Update Blog
+            {UpdatingBlog ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              "Update Blog"
+            )}
           </Button>
         </form>
       </div>
