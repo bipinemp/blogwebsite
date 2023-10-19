@@ -38,7 +38,6 @@ const page = ({ params }: { params: { id: string } }) => {
     },
     onSettled(data) {
       router.push(`/details/${data?.updatedBlog?._id}`);
-      // console.log(JSON.stringify(data));
     },
     onError: () => alert("Something went wrong try again"),
   });
