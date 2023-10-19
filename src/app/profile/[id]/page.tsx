@@ -41,10 +41,10 @@ const page = ({ params }: { params: { id: string } }) => {
           <h1 className="font-black text-xl tracking-widest">
             {userDataa?.name}
           </h1>
-          <h1 className="flex gap-2 items-center text-gray-500">
+          <h3 className="flex gap-2 items-center text-gray-500">
             <span>🎂 Joined On : </span>
             {formattedDate}
-          </h1>
+          </h3>
         </div>
 
         {!profileLoading && blogsLoading ? (
@@ -59,11 +59,11 @@ const page = ({ params }: { params: { id: string } }) => {
           {userBlogs?.blogs ? (
             <div className="min-w-[250px] h-[100px] flex gap-2 border-[2px] px-4 pt-5 rounded-lg">
               <FileText className="w-5 h-5" />
-              <h1 className="text-gray-400">
+              <h3 className="text-gray-400">
                 {userBlogs?.blogs.length > 1
                   ? `${userBlogs?.blogs.length} blogs published`
                   : `${userBlogs?.blogs.length} blog published`}
-              </h1>
+              </h3>
             </div>
           ) : null}
           <div className="w-full flex flex-col gap-5 mb-10">

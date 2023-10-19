@@ -32,6 +32,7 @@ export type Blog = {
   user: UserData;
   title: string;
   body: string;
+  description: string;
   edited: boolean;
   createdAt: string; // Change to the appropriate type if necessary
   updatedAt: string; // Change to the appropriate type if necessary
@@ -50,7 +51,7 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { title, body } = await req.json();
+  const { title, body, description } = await req.json();
   const token = await getToken({ req });
   const userDetails = (await User.findOne({ email: token?.email })) as UserData;
 
@@ -79,6 +80,10 @@ export async function PATCH(
 
     if (body) {
       blog.body = body;
+    }
+
+    if (description) {
+      blog.description = description;
     }
 
     blog.edited = true;

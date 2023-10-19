@@ -7,7 +7,7 @@ const PROFILE_BASE_URL = "http://localhost:3000/api/profile";
 // for creating a new blog
 export const createNewBlog = async (blogData: TBlogSchema) => {
   try {
-    const response = await axios.post("/api/blogs/create", blogData);
+    const response = await axios.post(`${BLOG_BASE_URL}/create`, blogData);
     const data = response.data;
     return data;
   } catch (error) {
@@ -55,6 +55,26 @@ export const deleteBlog = async (id: string) => {
   try {
     const response = await axios.delete(`${BLOG_BASE_URL}/delete/${id}`);
     return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+type BlogDataType = {
+  title: string;
+  body: string;
+  description: string;
+};
+
+// for updating Blog
+export const updateBlog = async (blogId: string, dataa: BlogDataType) => {
+  try {
+    const response = await axios.patch(
+      `${BLOG_BASE_URL}/edit/${blogId}`,
+      dataa
+    );
+    const data = response.data;
+    return data;
   } catch (error) {
     return error;
   }

@@ -1,15 +1,16 @@
 "use client";
 
-import { BlogDetail } from "@/types/postTypes";
 import Container from "@/components/Container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import { useBlogDetails } from "@/hooks/blogs/use-blog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateBlog } from "@/components/queries/queries";
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => (
@@ -20,39 +21,53 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
+  const queryClient = useQueryClient();
 
+  const [blogId, setBlogId] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [body, setBody] = useState<string>("");
 
-  useEffect(() => {
-    const getBlogDetails = async (id: string) => {
-      const response = await axios.get<BlogDetail>(
-        `http://localhost:3000/api/blogs/details/${id}`
-      );
-      if (response?.status === 200) {
-        setTitle(response?.data?.blog?.title);
-        setDescription(response?.data?.blog?.description);
-        setBody(response?.data?.blog?.body || "");
-      }
-    };
-    getBlogDetails(id);
-  }, []);
+  const { data: BlogData, isLoading: BlogDataLoading } = useBlogDetails(id);
+  // mutation function for updating Blog
+  const { mutate: UpdateBlog, isLoading: UpdatingBlog } = useMutation({
+    mutationFn: updateBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+      alert("Blog Updated Successfully");
+    },
+    onSettled(data, error) {
+      console.log(data + " Error: " + error);
+    },
+    onError: () => alert("Something went wrong try again"),
+  });
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  if (BlogDataLoading) {
+    return (
+      <Container>
+        <div className="max-w-[900px] mx-auto mt-10 flex flex-col gap-4 justify-center">
+          <div className="bg-gray-700 animate-pulse rounded w-[170px] h-[30px]"></div>
+          <div className="bg-gray-700 animate-pulse rounded w-full h-[35px]"></div>
+          <div className="bg-gray-700 animate-pulse rounded w-full h-[35px]"></div>
+          <div className="bg-gray-700 animate-pulse rounded w-full h-[300px]"></div>
+          <div className="bg-gray-700 animate-pulse rounded-md w-full h-[40px]"></div>
+        </div>
+      </Container>
+    );
+  }
+
+  if (!title || !description || !body || !blogId) {
+    setTitle(BlogData?.blog?.title as string);
+    setDescription(BlogData?.blog?.description as string);
+    setBody(BlogData?.blog?.body as string);
+    setBlogId(BlogData?.blog?._id as string);
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await axios.patch(
-        `http://localhost:3000/api/blogs/edit/${id}`,
-        { title, body }
-      );
-      if (response.status === 200) {
-        alert("Blog Updated Successfully");
-        router.push(`/details/${id}`);
-      }
-    } catch (error: any) {
-      alert(error);
-    }
+    const blogDataa = { title, body, description };
+
+    UpdateBlog({ blogId, ...blogDataa });
   };
 
   const toolbarOptions = [
@@ -74,7 +89,7 @@ const page = ({ params }: { params: { id: string } }) => {
 
   return (
     <Container>
-      <div className="max-w-[900px]  mx-auto mt-10 flex flex-col gap-5">
+      <div className="max-w-[900px] mx-auto mt-10 flex flex-col gap-5">
         <h1 className="text-xl font-bold tracking-widest underline underline-offset-8">
           Update Blog ::
         </h1>
