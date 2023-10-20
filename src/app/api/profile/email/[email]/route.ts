@@ -8,7 +8,7 @@ export async function GET(
 ) {
   await connectToDB();
   try {
-    const userData = await User.find({ email: params.email });
+    const userData = await User.findOne({ email: params.email });
     return NextResponse.json(
       { message: "User Profile", userData },
       { status: 200 }

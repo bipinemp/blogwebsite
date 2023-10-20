@@ -1,5 +1,4 @@
 import {
-  deleteBlog,
   fetchBlogDetails,
   fetchUserBlogs,
   fetchUserDetails,
@@ -31,6 +30,16 @@ export const useBlogDetails = (id: string) => {
   });
 
   return { data, isLoading, isError, error, isFetched };
+};
+
+// for fetching userDetails using email
+export const useFetchProfileDetails = (email: string) => {
+  const { data, isLoading, isError, error } = useQuery<ProfileDetails>({
+    queryKey: ["profiledetails", email],
+    queryFn: () => fetchUserDetails(email),
+  });
+
+  return { data, isLoading, isError, error };
 };
 
 // for fetching user profile details

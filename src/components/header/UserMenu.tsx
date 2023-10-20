@@ -11,22 +11,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import LogOutBtn from "./LogOutBtn";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar } from "@radix-ui/react-avatar";
 import Image from "next/image";
 import Link from "next/link";
+import { UserDetail } from "@/types/postTypes";
 
-const UserMenu = ({ session }: any) => {
-  if (!session) return null;
+const UserMenu = ({ userData }: { userData: UserDetail | undefined }) => {
+  if (!userData) return null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          {session[0].image === "" || session[0].image === undefined ? (
+          {userData?.image === "" || userData?.image === undefined ? (
             <div className="relative block w-[50px] h-[50px] bg-gray-700 rounded-full animate-pulse"></div>
           ) : (
             <Image
-              src={session[0].image || ""}
+              src={userData?.image || ""}
               width={40}
               height={40}
               alt="profile picture"
@@ -39,16 +40,16 @@ const UserMenu = ({ session }: any) => {
         <DropdownMenuLabel>
           <DropdownMenuItem className="cursor-pointer flex flex-col items-start group">
             <p className="font-semibold tracking-wide group-hover:underline">
-              {session[0]?.name}
+              {userData?.name}
             </p>
             <span className="text-xs text-gray-400 tracking-wide group-hover:underline">
-              @{session[0]?.email}
+              @{userData?.email}
             </span>
           </DropdownMenuItem>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
-        <Link href={`/profile/${session[0]?._id}`}>
+        <Link href={`/profile/${userData?._id}`}>
           <DropdownMenuItem className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
@@ -56,7 +57,7 @@ const UserMenu = ({ session }: any) => {
         </Link>
         <DropdownMenuSeparator />
 
-        {/*  LogOut Btn component  */}
+        {/* LogOut Btn component  */}
         <LogOutBtn />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -64,13 +65,3 @@ const UserMenu = ({ session }: any) => {
 };
 
 export default UserMenu;
-
-{
-  /* <Image
-width={35}
-height={35}
-src={`${session?.user?.image}`}
-alt="avatar"
-className="rounded-full"
-/> */
-}
