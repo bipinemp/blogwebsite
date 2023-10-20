@@ -15,7 +15,9 @@ const Navbar: React.FC = () => {
   const router = useRouter();
 
   // hook  for getting  UserDetails ( id , name , email , image ) using email
-  const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
+  const { data, isLoading } = useFetchProfileDetails(
+    session?.data?.user?.email || ""
+  );
 
   const userDetails = data?.userData;
 
@@ -45,7 +47,11 @@ const Navbar: React.FC = () => {
         ) : null}
         {session?.data?.user ? null : <SignInBtn />}
         <DarkLightMode />
-        <UserMenu userData={userDetails} />
+        {isLoading ? (
+          <div className="relative block w-[45px] h-[45px] bg-gray-700 rounded-full animate-pulse"></div>
+        ) : (
+          <UserMenu userData={userDetails} />
+        )}
       </div>
     </nav>
   );
