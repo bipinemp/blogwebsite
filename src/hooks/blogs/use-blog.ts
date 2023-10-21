@@ -9,7 +9,6 @@ import {
   BlogDetail,
   Blogs,
   ProfileDetails,
-  ProfileResponse,
   SearchResults,
 } from "@/types/postTypes";
 import { useQuery } from "@tanstack/react-query";

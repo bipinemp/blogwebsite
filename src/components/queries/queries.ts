@@ -28,6 +28,28 @@ export const fetchAllBlogs = async (pageParam: number) => {
   }
 };
 
+// for upvoting blog
+export const upvoteTheBlog = async (id: string) => {
+  try {
+    const response = axios.post(`http://localhost:3000/api/blogs/upvote/${id}`);
+    return response;
+  } catch (error) {
+    error;
+  }
+};
+
+// for downvoting blog
+export const downvoteTheBlog = async (id: string) => {
+  try {
+    const response = axios.post(
+      `http://localhost:3000/api/blogs/downvote/${id}`
+    );
+    return response;
+  } catch (error) {
+    error;
+  }
+};
+
 // for fetching user Details like name , email , image , id , createdAt by using the email of currently logged In user
 export const fetchUserDetails = async (email: string) => {
   try {

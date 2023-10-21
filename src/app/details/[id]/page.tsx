@@ -41,7 +41,10 @@ const page = ({ params }: { params: { id: string } }) => {
 
   // for deleting blog
   const handleBlogDelete = (id: string) => {
-    DeleteBlog(id);
+    const ans = confirm("Are you sure you want to Delete");
+    if (ans) {
+      DeleteBlog(id);
+    }
   };
 
   if (isLoading) {

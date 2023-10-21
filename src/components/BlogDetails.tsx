@@ -15,6 +15,9 @@ import { useSession } from "next-auth/react";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import BlogOptions from "./BlogOptions";
 import { useRouter } from "next/navigation";
+import { useFetchProfileDetails } from "@/hooks/blogs/use-blog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteBlog, upvoteTheBlog } from "./queries/queries";
 
 interface BlogProps {
   blog: Blog;
@@ -23,6 +26,8 @@ interface BlogProps {
 export default function BlogDetails({ blog }: BlogProps) {
   const session = useSession();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const [userId, setUserId] = useState<string>("");
 
   const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
@@ -31,52 +36,55 @@ export default function BlogDetails({ blog }: BlogProps) {
   const [upvoted, setUpvoted] = useState(false);
   const [downvoted, setDownvoted] = useState(false);
 
+  // for fetching user Details using email
+  const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
+
+  // for giving the initial state to upvote and downvote of the blog
   useEffect(() => {
-    if (session?.status === "authenticated") {
-      const getProfile = async () => {
-        const response = await axios.get<ProfileDetails>(
-          `http://localhost:3000/api/profile/email/${session?.data.user?.email}`
-        );
-        if (response.status === 200) {
-          console.log(response.data);
-          const id = response?.data?.userData?._id;
-          if (id) {
-            setUserId(id);
-            const Isupvote =
-              blog.upvotes &&
-              blog.upvotes.some((upvote) => upvote._id === userId);
+    if (data) {
+      setUserId(data?.userData?._id);
+      const Isupvote =
+        blog.upvotes && blog.upvotes.some((upvote) => upvote._id === userId);
 
-            const Isdownvote =
-              blog.downvotes &&
-              blog.downvotes.some((downvote) => downvote._id === userId);
+      const Isdownvote =
+        blog.downvotes &&
+        blog.downvotes.some((downvote) => downvote._id === userId);
 
-            setUpvoted(Isupvote);
+      setUpvoted(Isupvote);
 
-            setDownvoted(Isdownvote);
-          }
-        }
-      };
-      getProfile();
+      setDownvoted(Isdownvote);
     }
-  }, [session, blog, userId]);
+  }, [data, blog, userId]);
 
-  const handleBlogDelete = async (id: string) => {
+  // muation function for deleting blog
+  const { mutate: DeleteBlog } = useMutation({
+    mutationFn: deleteBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+      alert("Blog deleted Successfully");
+      router.push("/");
+    },
+    onError: () => alert("something went wrong try again"),
+  });
+
+  const handleBlogDelete = (id: string) => {
     const ans = confirm("Are you sure you want to Delete");
     if (ans) {
-      try {
-        const response = await axios.delete(
-          `http://localhost:3000/api/blogs/delete/${id}`
-        );
-        if (response.status === 200) {
-          alert("Blog deleted Successfully");
-        }
-      } catch (error: any) {
-        alert(error?.message);
-      }
+      DeleteBlog(id);
     }
   };
 
+  // hook for formating the date of blog created
   const formattedDate = useFormatDate(`${blog?.createdAt}`);
+
+  // mutation functions for upvoting
+  const { mutate: UpvoteMutation } = useMutation({
+    mutationFn: upvoteTheBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+    onError: () => alert("Something went wrong restart please"),
+  });
 
   const handleUpvote = async () => {
     if (session?.status === "unauthenticated") {
@@ -92,15 +100,18 @@ export default function BlogDetails({ blog }: BlogProps) {
         setUpvote(upvote - 1);
       }
       setUpvoted(!upvoted);
-      try {
-        await axios.post(`http://localhost:3000/api/blogs/upvote/${blog?._id}`);
-        router.refresh();
-      } catch (error) {
-        alert(error);
-        console.log(error);
-      }
+      UpvoteMutation(blog?._id);
     }
   };
+
+  // mutation functions for downvoting
+  const { mutate: DownvoteMutation } = useMutation({
+    mutationFn: upvoteTheBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+    onError: () => alert("Something went wrong restart please"),
+  });
 
   const handleDownvote = async () => {
     if (session?.status === "unauthenticated") {
@@ -116,12 +127,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       setDownvote(downvote - 1);
     }
     setDownvoted(!downvoted);
-    try {
-      await axios.post(`http://localhost:3000/api/blogs/downvote/${blog?._id}`);
-      router.refresh();
-    } catch (error) {
-      alert(error);
-    }
+    DownvoteMutation(blog?._id);
   };
 
   const actualVote = upvote - downvote;
