@@ -9,7 +9,6 @@ import {
   MessageCircle,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { useFormatDate } from "@/hooks/useFormatDate";
