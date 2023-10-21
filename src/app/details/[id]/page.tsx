@@ -75,7 +75,7 @@ const page = ({ params }: { params: { id: string } }) => {
                 <p className="text-[0.7rem] italic">{formattedDate}</p>
               </div>
             </div>
-            {BlogData?.blog?.user._id === data?.userData[0]?._id ? (
+            {BlogData?.blog?.user._id === data?.userData?._id ? (
               <BlogOptions
                 onDelete={() => handleBlogDelete(BlogData?.blog._id || "")}
                 id={BlogData?.blog?._id || ""}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Blog, ProfileResponse } from "@/types/postTypes";
+import { Blog, ProfileDetails } from "@/types/postTypes";
 import AvatarDemo from "./header/Avatar";
 import {
   ChevronRight,
@@ -34,11 +34,12 @@ export default function BlogDetails({ blog }: BlogProps) {
   useEffect(() => {
     if (session?.status === "authenticated") {
       const getProfile = async () => {
-        const response = await axios.get<ProfileResponse>(
+        const response = await axios.get<ProfileDetails>(
           `http://localhost:3000/api/profile/email/${session?.data.user?.email}`
         );
         if (response.status === 200) {
-          const id = response?.data?.userData[0]?._id;
+          console.log(response.data);
+          const id = response?.data?.userData?._id;
           if (id) {
             setUserId(id);
             const Isupvote =
@@ -50,6 +51,7 @@ export default function BlogDetails({ blog }: BlogProps) {
               blog.downvotes.some((downvote) => downvote._id === userId);
 
             setUpvoted(Isupvote);
+
             setDownvoted(Isdownvote);
           }
         }
