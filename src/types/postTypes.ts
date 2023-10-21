@@ -77,3 +77,9 @@ export type ProfileDetails = {
   message: string;
   userData: UserDetail;
 };
+
+// for search Results
+export type SearchResults = {
+  message: String;
+  filteredBlogs: Blog[];
+};

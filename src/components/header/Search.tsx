@@ -2,33 +2,32 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export function Search() {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const searchParams = useSearchParams();
 
-  function handleSearch() {
-    router.push(`/search?query=${searchQuery}`);
-  }
+  const query = searchParams.get("query");
+  const [searchQuery, setSearchQuery] = useState<string>(query || "");
 
   return (
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+        }}
         type="text"
         placeholder="Search..."
         className="border-zinc-500"
       />
-      <Button
-        onClick={handleSearch}
-        type="submit"
-        className="font-bold tracking-wider"
-      >
-        Search
-      </Button>
+      <Link href={`/search?query=${searchQuery}`}>
+        <Button type="submit" className="font-bold tracking-wider">
+          Search
+        </Button>
+      </Link>
     </div>
   );
 }

@@ -81,6 +81,18 @@ export const updateBlog = async (dataa: BLOGDATATYPE) => {
   }
 };
 
+// for searching blog
+export const fetchSearchBlogs = async (query: string) => {
+  try {
+    const response = await axios.get(`${BLOG_BASE_URL}/search?query=${query}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
 // for getting user's profile details using id
 export const fetchUserProfile = async (id: string) => {
   try {

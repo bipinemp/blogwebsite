@@ -1,5 +1,6 @@
 import {
   fetchBlogDetails,
+  fetchSearchBlogs,
   fetchUserBlogs,
   fetchUserDetails,
   fetchUserProfile,
@@ -9,6 +10,7 @@ import {
   Blogs,
   ProfileDetails,
   ProfileResponse,
+  SearchResults,
 } from "@/types/postTypes";
 import { useQuery } from "@tanstack/react-query";
 
@@ -37,6 +39,16 @@ export const useFetchProfileDetails = (email: string) => {
   const { data, isLoading, isError, error } = useQuery<ProfileDetails>({
     queryKey: ["profiledetails", email],
     queryFn: () => fetchUserDetails(email),
+  });
+
+  return { data, isLoading, isError, error };
+};
+
+// for searching blogs
+export const useSearchBlogs = (query: string) => {
+  const { data, isLoading, isError, error } = useQuery<SearchResults>({
+    queryKey: ["searchblog", query],
+    queryFn: () => fetchSearchBlogs(query),
   });
 
   return { data, isLoading, isError, error };
