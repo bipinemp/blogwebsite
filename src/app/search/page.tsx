@@ -4,21 +4,23 @@ import BlogDetails from "@/components/BlogDetails";
 import { BlogLoadingChild } from "@/components/BlogLoading";
 import Container from "@/components/Container";
 import { useSearchBlogs } from "@/hooks/blogs/use-blog";
+import { useQueryState } from "next-usequerystate";
 import { useSearchParams } from "next/navigation";
 
 const page = () => {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query");
-  const search = query?.toLocaleLowerCase();
+  // const searchParams = useSearchParams();
+  // const query = searchParams.get("query");
+  // const search = query?.toLocaleLowerCase();
+  const [searchQ, setSearchQ] = useQueryState("query");
 
-  const { data, isLoading } = useSearchBlogs(search || "");
+  const { data, isLoading } = useSearchBlogs(searchQ || "");
 
   return (
     <div className="mx-auto mt-4 max-w-5xl px-6">
       <Container>
         <div className="flex flex-col gap-7">
           <h1 className="font-semibold text-xl tracking-wide">
-            Search Results for <span className="text-red-500">"{query}"</span>
+            Search Results for <span className="text-red-500">"{searchQ}"</span>
           </h1>
 
           {isLoading ? <BlogLoadingChild /> : null}

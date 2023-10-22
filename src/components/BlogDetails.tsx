@@ -16,7 +16,7 @@ import BlogOptions from "./BlogOptions";
 import { useRouter } from "next/navigation";
 import { useFetchProfileDetails } from "@/hooks/blogs/use-blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteBlog, upvoteTheBlog } from "./queries/queries";
+import { deleteBlog, downvoteTheBlog, upvoteTheBlog } from "./queries/queries";
 
 interface BlogProps {
   blog: Blog;
@@ -105,7 +105,7 @@ export default function BlogDetails({ blog }: BlogProps) {
 
   // mutation functions for downvoting
   const { mutate: DownvoteMutation } = useMutation({
-    mutationFn: upvoteTheBlog,
+    mutationFn: downvoteTheBlog,
     onSuccess: () => {
       queryClient.invalidateQueries(["blogs"]);
     },

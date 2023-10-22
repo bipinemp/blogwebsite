@@ -8,9 +8,12 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useRouter } from "next/navigation";
-import { MessageCircle } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { Textarea } from "./ui/textarea";
-import { Blog, BlogDetail, ProfileResponse } from "@/types/postTypes";
+import { Blog } from "@/types/postTypes";
+import { useUserDetails } from "@/hooks/blogs/use-blog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createNewComment } from "./queries/queries";
 
 export default function AddComment({
   blogId,
@@ -21,55 +24,41 @@ export default function AddComment({
 }) {
   const router = useRouter();
   const session = useSession();
-  const [userId, setUserId] = useState<string>("");
+  const queryClient = useQueryClient();
+
   const [comment, setComment] = useState<string>("");
   const [textareas, setTextareas] = useState<string[]>([]);
   const [replies, setReplies] = useState<{ [key: string]: string }>({});
 
-  useEffect(() => {
-    if (session?.status === "authenticated") {
-      const getProfile = async () => {
-        const response = await axios.get<ProfileResponse>(
-          `http://localhost:3000/api/profile/email/${session?.data.user?.email}`
-        );
-        if (response.status === 200) {
-          const id = response?.data?.userData[0]?._id;
-          if (id) {
-            setUserId(id);
-          }
-        }
-      };
-      getProfile();
-    }
-  }, [session]);
+  // for fetching user Details like email , name etc using logged in user's email
+  const { data } = useUserDetails(session?.data?.user?.email || "");
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setComment(e.target.value);
   };
 
-  const submitComment = async () => {
-    if (session?.status === "unauthenticated") {
-      router.push("/sign-in");
-    }
-    try {
-      const response = await axios.post(
-        `http://localhost:3000/api/blogs/comment/${blogId}`,
-        { comment }
-      );
-      if (response?.status === 201) {
-        alert("Comment Successfull");
-      }
-    } catch (error) {
-      alert(error);
-      console.log(error);
-    } finally {
-      setComment("");
-    }
+  // mutation function for creating new comment in blog
+  const { mutate: CreateNewComment, isLoading: SubmittingComment } =
+    useMutation({
+      mutationFn: createNewComment,
+      onSuccess: () => {
+        queryClient.invalidateQueries(["blogDetails"]);
+      },
+      onSettled() {
+        setComment("");
+      },
+      onError: () => alert("Something went wrong try again later"),
+    });
+
+  const submitComment = () => {
+    const commentData = { blogId, comment };
+    CreateNewComment(commentData);
   };
 
+  // function which is using custom hook for formating blog creation date
   function formatDatee(val: string) {
-    const formattedDate = useFormatDate(blogDetails?.createdAt || "");
+    const formattedDate = useFormatDate(val || "");
     return formattedDate;
   }
 
@@ -99,18 +88,16 @@ export default function AddComment({
       router.push("/sign-in");
     }
     try {
-      console.log(blogId, commentId);
       const response = await axios.post(
         `http://localhost:3000/api/blogs/reply?blogId=${blogId}&commentId=${commentId}`,
         { reply: replies[commentId] }
       );
-      console.log(response);
+
       if (response.status === 200) {
         alert("Reply on Comment Successfull");
       }
     } catch (error) {
       alert(error);
-      console.log(error);
     } finally {
       const filteredTextareas = textareas.filter(
         (textarea) => textarea !== commentId
@@ -131,7 +118,7 @@ export default function AddComment({
         <div className="flex gap-3 items-center">
           <AvatarDemo
             image={session?.data?.user?.image || ""}
-            id={userId || ""}
+            id={data?.userData?._id || ""}
           />
           <Input
             value={comment}
@@ -143,7 +130,14 @@ export default function AddComment({
             onClick={submitComment}
             className="font-bold tracking-wide text-lg"
           >
-            Submit
+            {SubmittingComment ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <p>Submitting</p>
+              </div>
+            ) : (
+              "Submit"
+            )}
           </Button>
         </div>
       ) : (

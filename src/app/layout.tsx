@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Writz",
   description: "Blog website for software developers",
   icons: {
-    icon: ["/writz.png?v=4"],
+    icon: ["/writz.ico?v=4"],
   },
 };
 

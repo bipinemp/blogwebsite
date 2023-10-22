@@ -15,6 +15,24 @@ export const createNewBlog = async (blogData: TBlogSchema) => {
   }
 };
 
+// for commenting in blog
+type COMMENTDATATYPE = {
+  blogId: string;
+  comment: string;
+};
+
+export const createNewComment = async (data: COMMENTDATATYPE) => {
+  try {
+    const response = await axios.post(
+      `${BLOG_BASE_URL}/comment/${data.blogId}`,
+      data
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 // for fetching all blogs the Feed of website
 export const fetchAllBlogs = async (pageParam: number) => {
   try {
@@ -31,7 +49,7 @@ export const fetchAllBlogs = async (pageParam: number) => {
 // for upvoting blog
 export const upvoteTheBlog = async (id: string) => {
   try {
-    const response = axios.post(`http://localhost:3000/api/blogs/upvote/${id}`);
+    const response = axios.post(`${BLOG_BASE_URL}/upvote/${id}`);
     return response;
   } catch (error) {
     error;
@@ -41,9 +59,7 @@ export const upvoteTheBlog = async (id: string) => {
 // for downvoting blog
 export const downvoteTheBlog = async (id: string) => {
   try {
-    const response = axios.post(
-      `http://localhost:3000/api/blogs/downvote/${id}`
-    );
+    const response = axios.post(`${BLOG_BASE_URL}/downvote/${id}`);
     return response;
   } catch (error) {
     error;

@@ -39,7 +39,7 @@ export async function POST(
 
   try {
     if (blog) {
-      blog.comments.push({ user: userId, comment });
+      blog.comments.unshift({ user: userId, comment });
       await blog.save();
       return NextResponse.json(
         { message: "Comment on Blog Successfull" },
