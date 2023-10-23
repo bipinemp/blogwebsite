@@ -94,7 +94,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               {BlogData?.blog?.title}
             </h1>
             <p className="pl-5 mb-4 opacity-80 italic">
-              "{BlogData?.blog?.description}"
+              &quot;{BlogData?.blog?.description}&quot;
             </p>
             <hr />
             <div
