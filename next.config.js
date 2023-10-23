@@ -9,7 +9,7 @@ const nextConfig = {
     GOOGLE_SECRET: "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",
 
     NEXTAUTH_SECRET: "fakjdlfjdklfjaklf#!@#JKL@JK$@@#KL@#K@L@#@",
-    NEXTAUTH_URL: "https://blogwebsite-gamma.vercel.app",
+    NEXTAUTH_URL: "writz.vercel.app",
 
     MONGO_URL:
       "mongodb+srv://bipinbhandari:gaindakot@nodejstutorial.bv7ep8i.mongodb.net/blogwebsite?retryWrites=true&w=majority",
