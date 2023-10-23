@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
-import { useFormatDate } from "@/hooks/useFormatDate";
+import { formatDate } from "@/hooks/useFormatDate";
 import BlogOptions from "./BlogOptions";
 import { useRouter } from "next/navigation";
 import { useFetchProfileDetails } from "@/hooks/blogs/use-blog";
@@ -76,7 +76,7 @@ export default function BlogDetails({ blog }: BlogProps) {
   };
 
   // hook for formating the date of blog created
-  const formattedDate = useFormatDate(`${blog?.createdAt}`);
+  const formattedDate = formatDate(`${blog?.createdAt}`);
 
   // mutation functions for upvoting
   const { mutate: UpvoteMutation } = useMutation({

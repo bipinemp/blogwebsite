@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FileText } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import BlogDetails from "@/components/BlogDetails";
-import { useFormatDate } from "@/hooks/useFormatDate";
+import { formatDate } from "@/hooks/useFormatDate";
 import { useUserProfileDetails } from "@/hooks/blogs/use-blog";
 import { useSession } from "next-auth/react";
 
@@ -16,7 +16,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const { userDataa, profileLoading, userBlogs, blogsLoading } =
     useUserProfileDetails(id);
 
-  const formattedDate = useFormatDate(`${userDataa?.createdAt}`);
+  const formattedDate = formatDate(`${userDataa?.createdAt}`);
 
   return (
     <Container>

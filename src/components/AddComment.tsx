@@ -5,7 +5,7 @@ import AvatarDemo from "./header/Avatar";
 import { useSession } from "next-auth/react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useFormatDate } from "@/hooks/useFormatDate";
+import { formatDate } from "@/hooks/useFormatDate";
 import { useRouter } from "next/navigation";
 import { Loader2, MessageCircle } from "lucide-react";
 import { Textarea } from "./ui/textarea";
@@ -60,7 +60,7 @@ export default function AddComment({
 
   // function which is using custom hook for formating blog creation date
   function formatDatee(val: string) {
-    const formattedDate = useFormatDate(val || "");
+    const formattedDate = formatDate(val || "");
     return formattedDate;
   }
 

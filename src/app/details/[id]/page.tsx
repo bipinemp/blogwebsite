@@ -7,7 +7,7 @@ import Container from "@/components/Container";
 import AvatarDemo from "@/components/header/Avatar";
 import { deleteBlog } from "@/components/queries/queries";
 import { useBlogDetails, useUserDetails } from "@/hooks/blogs/use-blog";
-import { useFormatDate } from "@/hooks/useFormatDate";
+import { formatDate } from "@/hooks/useFormatDate";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -27,7 +27,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const { data: BlogData, isLoading } = useBlogDetails(id);
 
   // hook for formating the User's account creation date
-  const formattedDate = useFormatDate(BlogData?.blog?.createdAt || "");
+  const formattedDate = formatDate(BlogData?.blog?.createdAt || "");
 
   // muation function for deleting blog
   const { mutate: DeleteBlog } = useMutation({

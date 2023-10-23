@@ -1,6 +1,4 @@
-import React from "react";
-
-export const useFormatDate = (date: string) => {
+export const formatDate = (date: string) => {
   const createdAtDate = new Date(`${date}`);
 
   const months = [
