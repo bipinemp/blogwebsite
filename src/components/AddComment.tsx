@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AvatarDemo from "./header/Avatar";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useFormatDate } from "@/hooks/useFormatDate";
@@ -13,11 +12,7 @@ import { Textarea } from "./ui/textarea";
 import { Blog } from "@/types/postTypes";
 import { useUserDetails } from "@/hooks/blogs/use-blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  REPLYDATATYPE,
-  createNewComment,
-  createNewReply,
-} from "./queries/queries";
+import { createNewComment, createNewReply } from "./queries/queries";
 
 export default function AddComment({
   blogId,

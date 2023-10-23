@@ -16,7 +16,8 @@ const Page = () => {
       <Container>
         <div className="flex flex-col gap-7">
           <h1 className="font-semibold text-xl tracking-wide">
-            Search Results for <span className="text-red-500">"{searchQ}"</span>
+            Search Results for{" "}
+            <span className="text-red-500">&quot;{searchQ}&quot;</span>
           </h1>
 
           {isLoading ? <BlogLoadingChild /> : null}
