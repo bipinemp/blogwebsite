@@ -33,6 +33,25 @@ export const createNewComment = async (data: COMMENTDATATYPE) => {
   }
 };
 
+// for posting reply on comment
+export type REPLYDATATYPE = {
+  blogId: string;
+  commentId: string;
+  reply: string;
+};
+
+export const createNewReply = async (data: REPLYDATATYPE) => {
+  try {
+    const response = await axios.post(
+      `${BLOG_BASE_URL}/reply?blogId=${data.blogId}&commentId=${data.commentId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 // for fetching all blogs the Feed of website
 export const fetchAllBlogs = async (pageParam: number) => {
   try {

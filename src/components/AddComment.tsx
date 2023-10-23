@@ -13,7 +13,11 @@ import { Textarea } from "./ui/textarea";
 import { Blog } from "@/types/postTypes";
 import { useUserDetails } from "@/hooks/blogs/use-blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNewComment } from "./queries/queries";
+import {
+  REPLYDATATYPE,
+  createNewComment,
+  createNewReply,
+} from "./queries/queries";
 
 export default function AddComment({
   blogId,
@@ -52,6 +56,9 @@ export default function AddComment({
     });
 
   const submitComment = () => {
+    if (session?.status === "unauthenticated") {
+      router.push("/sign-in");
+    }
     const commentData = { blogId, comment };
     CreateNewComment(commentData);
   };
@@ -83,28 +90,28 @@ export default function AddComment({
     setReplies({ ...replies, [commentId]: value });
   }
 
-  async function handleReplySubmit(blogId: string, commentId: string) {
+  // mutation function for posting reply on comment
+
+  const { mutate: CreateNewReplyMutation, isLoading: ReplyLoading } =
+    useMutation({
+      mutationFn: createNewReply,
+      onSuccess: () => {
+        queryClient.invalidateQueries(["blogDetails"]);
+      },
+      onSettled: (data) => {
+        const filteredTextareas = textareas.filter(
+          (textarea) => textarea !== data?.replyData?.commentId
+        );
+        setTextareas(filteredTextareas);
+      },
+    });
+
+  function handleReplySubmit(blogId: string, commentId: string) {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
     }
-    try {
-      const response = await axios.post(
-        `http://localhost:3000/api/blogs/reply?blogId=${blogId}&commentId=${commentId}`,
-        { reply: replies[commentId] }
-      );
-
-      if (response.status === 200) {
-        alert("Reply on Comment Successfull");
-      }
-    } catch (error) {
-      alert(error);
-    } finally {
-      const filteredTextareas = textareas.filter(
-        (textarea) => textarea !== commentId
-      );
-      setTextareas(filteredTextareas);
-      router.refresh();
-    }
+    const replyData = { blogId, commentId, reply: replies[commentId] };
+    CreateNewReplyMutation(replyData);
   }
 
   return (
@@ -200,7 +207,14 @@ export default function AddComment({
                           handleReplySubmit(blogDetails?._id, comment?._id)
                         }
                       >
-                        Submit
+                        {ReplyLoading ? (
+                          <div className="flex items-center gap-3">
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <p>Submitting</p>
+                          </div>
+                        ) : (
+                          "Submit"
+                        )}
                       </Button>
                       <Button
                         onClick={() => handleDismissReply(comment?._id)}

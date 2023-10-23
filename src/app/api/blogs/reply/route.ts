@@ -61,10 +61,11 @@ export async function POST(req: NextRequest) {
 
   try {
     if (blog && comment) {
-      comment.replies.push({ user: userId, reply });
+      comment.replies.unshift({ user: userId, reply });
       await blog.save();
+      const replyData = { userId, commentId };
       return NextResponse.json(
-        { message: "Comment on Blog Successfull", userId },
+        { message: "Comment on Blog Successfull", replyData },
         { status: 201 }
       );
     } else {
