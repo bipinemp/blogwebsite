@@ -79,7 +79,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     ["link"],
   ];
 
-  const module = {
+  const modulee = {
     toolbar: toolbarOptions,
     clipboard: {
       matchVisual: true,
@@ -111,7 +111,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
           <div className="relative h-[300px]">
             <ReactQuill
-              modules={module}
+              modules={modulee}
               theme="snow"
               value={body}
               onChange={setBody}
