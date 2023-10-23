@@ -17,12 +17,14 @@ import { useRouter } from "next/navigation";
 import { useFetchProfileDetails } from "@/hooks/blogs/use-blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteBlog, downvoteTheBlog, upvoteTheBlog } from "./queries/queries";
+import { useTheme } from "next-themes";
 
 interface BlogProps {
   blog: Blog;
 }
 
 export default function BlogDetails({ blog }: BlogProps) {
+  const { theme } = useTheme();
   const session = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -174,9 +176,13 @@ export default function BlogDetails({ blog }: BlogProps) {
             }}
             className={`${
               upvoted ? "fill-green-500 stroke-green-500" : ""
-            } w-9 h-9 hover:bg-neutral-800 p-[0.2rem] rounded-full transition`}
+            } w-9 h-9 ${
+              theme === "light"
+                ? "hover:bg-neutral-300"
+                : "hover:bg-neutral-800"
+            } p-[0.2rem] rounded-full transition`}
           />
-          <h3>{actualVote} </h3>
+          <h3 className="w-[20px] text-center">{actualVote} </h3>
           <ArrowBigDown
             onClick={(e) => {
               handleDownvote();
@@ -184,7 +190,11 @@ export default function BlogDetails({ blog }: BlogProps) {
             }}
             className={`${
               downvoted ? "fill-red-500 stroke-red-500" : ""
-            } w-9 h-9 hover:bg-neutral-800 p-[0.2rem] rounded-full transition`}
+            } w-9 h-9 ${
+              theme === "light"
+                ? "hover:bg-neutral-300"
+                : "hover:bg-neutral-800"
+            } hover:bg-neutral-800 p-[0.2rem] rounded-full transition`}
           />
         </div>
         <div>
