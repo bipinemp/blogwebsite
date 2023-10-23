@@ -1,4 +1,3 @@
-import Container from "@/components/Container";
 import React from "react";
 
 export const BlogLoadingChild = () => {
@@ -31,21 +30,17 @@ export const UserProfileLoading = () => {
 
 function BlogLoading() {
   return (
-    <div className="mx-auto mt-20 max-w-5xl px-6">
-      <Container>
-        <div className="flex flex-col gap-7">
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-          <BlogLoadingChild />
-        </div>
-      </Container>
+    <div className="flex flex-col gap-7">
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
+      <BlogLoadingChild />
     </div>
   );
 }

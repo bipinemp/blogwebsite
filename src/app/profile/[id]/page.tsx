@@ -8,20 +8,14 @@ import BlogDetails from "@/components/BlogDetails";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useUserProfileDetails } from "@/hooks/blogs/use-blog";
 import { UserProfileLoading } from "@/components/BlogLoading";
+import { useSession } from "next-auth/react";
 
 const page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
+  const session = useSession();
 
   const { userDataa, profileLoading, userBlogs, blogsLoading } =
     useUserProfileDetails(id);
-
-  if (profileLoading) {
-    return (
-      <Container>
-        <UserProfileLoading />
-      </Container>
-    );
-  }
 
   const formattedDate = useFormatDate(`${userDataa?.createdAt}`);
 
@@ -31,7 +25,7 @@ const page = ({ params }: { params: { id: string } }) => {
         <div className="relative min-h-[200px] flex flex-col gap-4 items-center border-[2px] p-3 rounded-lg">
           <div>
             <Image
-              src={`${userDataa?.image}`}
+              src={`${session?.data?.user?.image}`}
               width={100}
               height={100}
               alt="profile picture of user"
@@ -39,15 +33,19 @@ const page = ({ params }: { params: { id: string } }) => {
             />
           </div>
           <h1 className="font-black text-xl tracking-widest">
-            {userDataa?.name}
+            {session?.data?.user?.name}
           </h1>
-          <h3 className="flex gap-2 items-center text-gray-500">
-            <span>🎂 Joined On : </span>
-            {formattedDate}
-          </h3>
+          {profileLoading ? (
+            <div className="w-[200px] h-[24.5px] bg-gray-700 animate-pulse rounded"></div>
+          ) : (
+            <h3 className="flex gap-2 items-center text-gray-500">
+              <span>🎂 Joined On : </span>
+              {formattedDate}
+            </h3>
+          )}
         </div>
 
-        {!profileLoading && blogsLoading ? (
+        {blogsLoading ? (
           <div className="mt-7">
             <div className="w-[100px] mx-auto">
               <Loader2 className="w-16 h-16 text-gray-400 mt-20 animate-spin" />
@@ -57,13 +55,15 @@ const page = ({ params }: { params: { id: string } }) => {
 
         <div className="flex gap-5 justify-between">
           {userBlogs?.blogs ? (
-            <div className="min-w-[250px] h-[100px] flex gap-2 border-[2px] px-4 pt-5 rounded-lg">
-              <FileText className="w-5 h-5" />
-              <h3 className="text-gray-400">
-                {userBlogs?.blogs.length > 1
-                  ? `${userBlogs?.blogs.length} blogs published`
-                  : `${userBlogs?.blogs.length} blog published`}
-              </h3>
+            <div className="min-w-[250px] h-[100px] px-4 pt-5 rounded-lg border-[2px]">
+              <div className="flex items-center gap-3">
+                <FileText className="w-5 h-5" />
+                <h3 className="text-gray-400">
+                  {userBlogs?.blogs.length > 1
+                    ? `${userBlogs?.blogs.length} blogs published`
+                    : `${userBlogs?.blogs.length} blog published`}
+                </h3>
+              </div>
             </div>
           ) : null}
           <div className="w-full flex flex-col gap-5 mb-10">

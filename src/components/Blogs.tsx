@@ -32,10 +32,6 @@ export default function Blogs() {
     }
   }, [entry]);
 
-  if (isLoading) {
-    return <BlogLoading />;
-  }
-
   const BlogsData = data?.pages.map((page) => page);
   const blogs = BlogsData?.flatMap((blog) => blog.blogs);
 
@@ -49,6 +45,9 @@ export default function Blogs() {
         <h1 className="text-2xl font-extrabold underline underline-offset-4">
           Your Feed
         </h1>
+
+        {isLoading ? <BlogLoading /> : null}
+
         <section className="flex flex-col gap-4 mb-10">
           {blogs?.flatMap((blog, i) => {
             const isLast = i === blogs?.length - 1;

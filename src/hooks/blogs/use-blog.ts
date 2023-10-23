@@ -64,7 +64,7 @@ export const useUserProfileDetails = (id: string) => {
   const { data: userBlogs, isLoading: blogsLoading } = useQuery<Blogs>({
     queryKey: ["userblogs", userData?.userData?._id],
     queryFn: () => fetchUserBlogs(id),
-    enabled: userData?.userData?._id !== null,
+    // enabled: userData?.userData?._id !== null,
   });
 
   const userDataa = userData?.userData;
