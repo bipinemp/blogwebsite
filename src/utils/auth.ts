@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     redirect() {
-      return "/";
+      return "https://writz.vercel.app/api/auth/callback/google";
     },
     // If we want to access our extra user info from sessions we have to pass it the token here to get them in sync:
     session: async ({ session, token }: any) => {
