@@ -8,10 +8,11 @@ import { fetchAllBlogs } from "./queries/queries";
 import { Fragment, useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import BlogLoading from "./BlogLoading";
-import useResetSearch from "@/hooks/useResetSearch";
+import { useSearchStore } from "@/store/store";
 
 export default function Blogs() {
   const lastBlogRef = useRef(null);
+  const { setSearchValue } = useSearchStore();
 
   const { ref, entry } = useIntersection({
     root: lastBlogRef.current,
@@ -40,7 +41,9 @@ export default function Blogs() {
     return <h1>No Blogs available :)</h1>;
   }
 
-  useResetSearch();
+  useEffect(() => {
+    setSearchValue("");
+  }, []);
 
   return (
     <Container>
