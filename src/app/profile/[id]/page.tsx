@@ -19,7 +19,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     setSearchValue("");
-  }, []);
+  }, [setSearchValue]);
 
   const { userDataa, profileLoading, userBlogs, blogsLoading } =
     useUserProfileDetails(id);

@@ -43,7 +43,7 @@ export default function Blogs() {
 
   useEffect(() => {
     setSearchValue("");
-  }, []);
+  }, [setSearchValue]);
 
   return (
     <Container>
