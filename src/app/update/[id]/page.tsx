@@ -18,7 +18,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   ),
 });
 
-const page = ({ params }: { params: { id: string } }) => {
+const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -136,4 +136,4 @@ const page = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default Page;

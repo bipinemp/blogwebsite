@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import Container from "@/components/Container";
 import SignIn from "@/components/SignIn";
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
   return (
     <Container>
       <div className="max-w-[400px] mx-auto min-h-[200px] mt-20 flex flex-col gap-10">
@@ -27,4 +27,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;

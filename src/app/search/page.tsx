@@ -5,13 +5,9 @@ import { BlogLoadingChild } from "@/components/BlogLoading";
 import Container from "@/components/Container";
 import { useSearchBlogs } from "@/hooks/blogs/use-blog";
 import { useQueryState } from "next-usequerystate";
-import { useSearchParams } from "next/navigation";
 
-const page = () => {
-  // const searchParams = useSearchParams();
-  // const query = searchParams.get("query");
-  // const search = query?.toLocaleLowerCase();
-  const [searchQ, setSearchQ] = useQueryState("query");
+const Page = () => {
+  const [searchQ] = useQueryState("query");
 
   const { data, isLoading } = useSearchBlogs(searchQ || "");
 
@@ -36,4 +32,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

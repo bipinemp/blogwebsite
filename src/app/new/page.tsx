@@ -24,7 +24,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 
 Quill.register("modules/clipboard", SurveyFormClipboard, true);
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -144,4 +144,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default Page;

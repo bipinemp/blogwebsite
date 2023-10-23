@@ -1,6 +1,6 @@
 "use client";
 
-import { Blog, ProfileDetails } from "@/types/postTypes";
+import { Blog } from "@/types/postTypes";
 import AvatarDemo from "./header/Avatar";
 import {
   ChevronRight,
@@ -135,6 +135,7 @@ export default function BlogDetails({ blog }: BlogProps) {
 
   return (
     <div
+      key={blog?._id}
       onClick={() => router.push(`/details/${blog?._id}`)}
       className="min-h-[220px] z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
     >

@@ -25,12 +25,13 @@ export const useUserDetails = (email: string) => {
 
 // for fetching Blog Details
 export const useBlogDetails = (id: string) => {
-  const { data, isLoading, isError, error, isFetched } = useQuery<BlogDetail>({
-    queryKey: ["blogDetails"],
-    queryFn: () => fetchBlogDetails(id),
-  });
+  const { data, isLoading, isError, error, isFetched, refetch } =
+    useQuery<BlogDetail>({
+      queryKey: ["blogDetails"],
+      queryFn: () => fetchBlogDetails(id),
+    });
 
-  return { data, isLoading, isError, error, isFetched };
+  return { data, isLoading, isError, error, isFetched, refetch };
 };
 
 // for fetching userDetails using email

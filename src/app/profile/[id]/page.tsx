@@ -7,10 +7,9 @@ import { Loader2 } from "lucide-react";
 import BlogDetails from "@/components/BlogDetails";
 import { useFormatDate } from "@/hooks/useFormatDate";
 import { useUserProfileDetails } from "@/hooks/blogs/use-blog";
-import { UserProfileLoading } from "@/components/BlogLoading";
 import { useSession } from "next-auth/react";
 
-const page = ({ params }: { params: { id: string } }) => {
+const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const session = useSession();
 
@@ -77,4 +76,4 @@ const page = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default Page;
