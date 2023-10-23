@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
+    BLOG_BASE_URL: "https://writz.vercel.app/api/blogs",
+    PROFILE_BASE_URL: "https://writz.vercel.app/api/profile",
+
     GITHUB_ID: "cc94f119f0ace68340f5",
     GITHUB_SECRET: "9b9eaf6103f3568104811a455c065a766ca15b1e",
 
