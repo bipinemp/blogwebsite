@@ -1,8 +1,8 @@
 import { TBlogSchema } from "@/types/postTypes";
 import axios from "axios";
 
-const BLOG_BASE_URL = "writz.vercel.app/api/blogs";
-const PROFILE_BASE_URL = "writz.vercel.app/api/profile";
+const BLOG_BASE_URL = "https://writz.vercel.app/api/blogs";
+const PROFILE_BASE_URL = "https://writz.vercel.app/api/profile";
 // const BLOG_BASE_URL = "http://localhost:3000/api/blogs";
 // const PROFILE_BASE_URL = "http://localhost:3000/api/profile";
 
