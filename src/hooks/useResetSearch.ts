@@ -5,6 +5,6 @@ export default function useResetSearch() {
   const { setSearchValue } = useSearchStore();
   useEffect(() => {
     setSearchValue("");
-  }, []);
+  }, [setSearchValue]);
   return true;
 }
