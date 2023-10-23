@@ -45,11 +45,11 @@ export default function BlogDetails({ blog }: BlogProps) {
     if (data) {
       setUserId(data?.userData?._id);
       const Isupvote =
-        blog.upvotes && blog.upvotes.some((upvote) => upvote._id === userId);
+        blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
 
       const Isdownvote =
-        blog.downvotes &&
-        blog.downvotes.some((downvote) => downvote._id === userId);
+        blog?.downvotes &&
+        blog?.downvotes.some((downvote) => downvote._id === userId);
 
       setUpvoted(Isupvote);
 
@@ -161,7 +161,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       </div>
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-2xl tracking-wide flex gap-1 items-center">
-          <ChevronRight className="w-4 h-4 font-bold" /> {blog.title}
+          <ChevronRight className="w-4 h-4 font-bold" /> {blog?.title}
           <span className="text-xs text-gray-400">
             {blog?.edited ? "(edited)" : null}
           </span>
