@@ -34,16 +34,16 @@ export default function Blogs() {
     }
   }, [entry, fetchNextPage]);
 
+  useEffect(() => {
+    setSearchValue("");
+  }, [setSearchValue]);
+
   const BlogsData = data?.pages.map((page) => page);
   const blogs = BlogsData?.flatMap((blog) => blog.blogs);
 
   if (blogs?.flat().length === 0) {
     return <h1>No Blogs available :)</h1>;
   }
-
-  useEffect(() => {
-    setSearchValue("");
-  }, [setSearchValue]);
 
   return (
     <Container>
