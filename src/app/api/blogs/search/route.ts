@@ -20,6 +20,15 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("query");
 
+    if (query?.toLocaleLowerCase() === "") {
+      return NextResponse.json(
+        {
+          message: "Empty Search Input, please fill somethign to search",
+        },
+        { status: 400 }
+      );
+    }
+
     // Search filter
     const filteredBlogs = blogs.filter((blog) => {
       return (

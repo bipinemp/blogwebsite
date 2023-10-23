@@ -50,7 +50,8 @@ export default function AddComment({
       onError: () => alert("Something went wrong try again later"),
     });
 
-  const submitComment = () => {
+  const submitComment = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
     }
@@ -101,6 +102,16 @@ export default function AddComment({
       },
     });
 
+  function handleReplyFormSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+    blogId: string,
+    commentId: string
+  ) {
+    e.preventDefault();
+    handleReplySubmit(blogId, commentId);
+    handleDismissReply(commentId);
+  }
+
   function handleReplySubmit(blogId: string, commentId: string) {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
@@ -117,7 +128,7 @@ export default function AddComment({
         </h1>
       </div>
       {session.status === "authenticated" ? (
-        <div className="flex gap-3 items-center">
+        <form onSubmit={submitComment} className="flex gap-3 items-center">
           <AvatarDemo
             image={session?.data?.user?.image || ""}
             id={data?.userData?._id || ""}
@@ -128,10 +139,7 @@ export default function AddComment({
             placeholder="Add an Comment..."
             className="max-w-[350px] border-zinc-500"
           />
-          <Button
-            onClick={submitComment}
-            className="font-bold tracking-wide text-lg"
-          >
+          <Button type="submit" className="font-bold tracking-wide text-lg">
             {SubmittingComment ? (
               <div className="flex items-center gap-2">
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -141,7 +149,7 @@ export default function AddComment({
               "Submit"
             )}
           </Button>
-        </div>
+        </form>
       ) : (
         <div>
           <Button
@@ -187,7 +195,12 @@ export default function AddComment({
                   </Button>
                 )}
                 {textareas.includes(comment._id) ? (
-                  <div className="flex flex-col gap-3">
+                  <form
+                    onSubmit={(e) =>
+                      handleReplyFormSubmit(e, blogDetails?._id, comment?._id)
+                    }
+                    className="flex flex-col gap-3"
+                  >
                     <Textarea
                       value={replies[comment._id]}
                       onChange={(e) =>
@@ -197,11 +210,7 @@ export default function AddComment({
                       placeholder="Reply..."
                     />
                     <div className="flex gap-4">
-                      <Button
-                        onClick={() =>
-                          handleReplySubmit(blogDetails?._id, comment?._id)
-                        }
-                      >
+                      <Button type="submit">
                         {ReplyLoading ? (
                           <div className="flex items-center gap-3">
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -212,13 +221,14 @@ export default function AddComment({
                         )}
                       </Button>
                       <Button
+                        type="button"
                         onClick={() => handleDismissReply(comment?._id)}
                         variant="outline"
                       >
                         Dismiss
                       </Button>
                     </div>
-                  </div>
+                  </form>
                 ) : null}
               </div>
             </div>
