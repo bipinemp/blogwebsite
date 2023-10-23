@@ -74,7 +74,7 @@ const Page: React.FC = () => {
     ["link"],
   ];
 
-  const module = {
+  const modulee = {
     toolbar: toolbarOptions,
     clipboard: {
       matchVisual: true,
@@ -115,7 +115,7 @@ const Page: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <ReactQuill
-                  modules={module}
+                  modules={modulee}
                   theme="snow"
                   value={field.value}
                   onChange={field.onChange}
