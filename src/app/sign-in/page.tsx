@@ -15,7 +15,7 @@ const Page: React.FC = () => {
           Home
         </Link>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-2xl font-black tracking-wide">Welcome back</h3>
+          <h1 className="font-black tracking-wide">Welcome back</h1>
           <p className="text-center text-[0.9rem] tracking-wide text-gray-400">
             By continuing, you are setting up a Writz account and agree to our
             User Agreement and Privacy Policy.

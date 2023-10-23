@@ -33,7 +33,7 @@ const SignIn = () => {
         ) : (
           <>
             <Google />
-            <h1>SignIn With Google</h1>
+            <h3>SignIn With Google</h3>
           </>
         )}
       </Button>
