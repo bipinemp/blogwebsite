@@ -8,10 +8,17 @@ import BlogDetails from "@/components/BlogDetails";
 import { formatDate } from "@/hooks/useFormatDate";
 import { useUserProfileDetails } from "@/hooks/blogs/use-blog";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useSearchStore } from "@/store/store";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const session = useSession();
+  const { setSearchValue } = useSearchStore();
+
+  useEffect(() => {
+    setSearchValue("");
+  }, []);
 
   const { userDataa, profileLoading, userBlogs, blogsLoading } =
     useUserProfileDetails(id);

@@ -25,13 +25,13 @@ export const useUserDetails = (email: string) => {
 
 // for fetching Blog Details
 export const useBlogDetails = (id: string) => {
-  const { data, isLoading, isError, error, isFetched, refetch } =
+  const { data, isLoading, isError, error, isFetched, refetch, isFetching } =
     useQuery<BlogDetail>({
-      queryKey: ["blogDetails"],
+      queryKey: ["blogDetails", id],
       queryFn: () => fetchBlogDetails(id),
     });
 
-  return { data, isLoading, isError, error, isFetched, refetch };
+  return { data, isLoading, isError, error, isFetched, refetch, isFetching };
 };
 
 // for fetching userDetails using email
@@ -48,6 +48,7 @@ export const useFetchProfileDetails = (email: string) => {
 export const useSearchBlogs = (query: string) => {
   const { data, isLoading, isError, error } = useQuery<SearchResults>({
     queryKey: ["searchblog", query],
+
     queryFn: () => fetchSearchBlogs(query),
   });
 
