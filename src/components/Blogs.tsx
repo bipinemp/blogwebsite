@@ -31,7 +31,7 @@ export default function Blogs() {
     if (entry?.isIntersecting) {
       fetchNextPage();
     }
-  }, [entry]);
+  }, [entry, fetchNextPage]);
 
   const BlogsData = data?.pages.map((page) => page);
   const blogs = BlogsData?.flatMap((blog) => blog.blogs);
