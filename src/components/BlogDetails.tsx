@@ -8,7 +8,7 @@ import {
   ArrowBigDown,
   MessageCircle,
 } from "lucide-react";
-import React, { useEffect, memo, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { formatDate } from "@/hooks/useFormatDate";
@@ -32,9 +32,7 @@ export default function BlogDetails({ blog }: BlogProps) {
   // for fetching user Details using email
   const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
 
-  const [userId, setUserId] = useState<string>(
-    (data && data?.userData?._id) || ""
-  );
+  const userId = (data && data?.userData?._id) || "";
 
   const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
   const [downvote, setDownvote] = useState<number>(blog?.downvotes?.length);
