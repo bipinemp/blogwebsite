@@ -8,7 +8,7 @@ import {
   ArrowBigDown,
   MessageCircle,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { formatDate } from "@/hooks/useFormatDate";
@@ -29,32 +29,36 @@ export default function BlogDetails({ blog }: BlogProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const [userId, setUserId] = useState<string>("");
+  // for fetching user Details using email
+  const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
+
+  const userId = (data && data?.userData?._id) || "";
 
   const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
   const [downvote, setDownvote] = useState<number>(blog?.downvotes?.length);
 
-  const [upvoted, setUpvoted] = useState(false);
-  const [downvoted, setDownvoted] = useState(false);
+  let upvoteFind =
+    blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
 
-  // for fetching user Details using email
-  const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
+  let downvoteFind =
+    blog?.downvotes &&
+    blog?.downvotes.some((downvote) => downvote._id === userId);
+
+  const [upvoted, setUpvoted] = useState(upvoteFind);
+  const [downvoted, setDownvoted] = useState(downvoteFind);
 
   // for giving the initial state to upvote and downvote of the blog
   useEffect(() => {
-    if (data) {
-      setUserId(data?.userData?._id);
-      const Isupvote =
-        blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
+    const Isupvote =
+      blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
 
-      const Isdownvote =
-        blog?.downvotes &&
-        blog?.downvotes.some((downvote) => downvote._id === userId);
+    const Isdownvote =
+      blog?.downvotes &&
+      blog?.downvotes.some((downvote) => downvote._id === userId);
 
-      setUpvoted(Isupvote);
+    setUpvoted(Isupvote);
 
-      setDownvoted(Isdownvote);
-    }
+    setDownvoted(Isdownvote);
   }, [data, blog, userId]);
 
   // muation function for deleting blog
@@ -76,16 +80,25 @@ export default function BlogDetails({ blog }: BlogProps) {
   };
 
   // hook for formating the date of blog created
-  const formattedDate = formatDate(`${blog?.createdAt}`);
+
+  const formattedDate = useMemo(
+    () => formatDate(blog?.createdAt),
+    [blog?.createdAt]
+  );
 
   // mutation functions for upvoting
   const { mutate: UpvoteMutation } = useMutation({
     mutationFn: upvoteTheBlog,
 
     onError: () => alert("Something went wrong restart please"),
+
+    onSettled: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+
   });
 
-  const handleUpvote = async () => {
+  const handleUpvote = useCallback(async () => {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
     } else {
@@ -101,16 +114,32 @@ export default function BlogDetails({ blog }: BlogProps) {
       setUpvoted(!upvoted);
       UpvoteMutation(blog?._id);
     }
-  };
+  }, [
+    session,
+    router,
+    upvoted,
+    downvoted,
+    upvote,
+    downvote,
+    setUpvote,
+    setDownvoted,
+    UpvoteMutation,
+    blog,
+  ]);
 
   // mutation functions for downvoting
   const { mutate: DownvoteMutation } = useMutation({
     mutationFn: downvoteTheBlog,
 
     onError: () => alert("Something went wrong restart please"),
+
+    onSettled: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
+
   });
 
-  const handleDownvote = async () => {
+  const handleDownvote = useCallback(async () => {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
     }
@@ -125,7 +154,18 @@ export default function BlogDetails({ blog }: BlogProps) {
     }
     setDownvoted(!downvoted);
     DownvoteMutation(blog?._id);
-  };
+  }, [
+    session,
+    router,
+    upvoted,
+    downvoted,
+    upvote,
+    downvote,
+    setUpvote,
+    setDownvoted,
+    UpvoteMutation,
+    blog,
+  ]);
 
   const actualVote = upvote - downvote;
 
