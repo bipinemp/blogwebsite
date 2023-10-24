@@ -9,10 +9,17 @@ import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useFetchProfileDetails } from "@/hooks/blogs/use-blog";
+import { useEffect } from "react";
 
 const Navbar: React.FC = () => {
   const session = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router.push("/sign-in");
+    }
+  }, [session]);
 
   // hook  for getting  UserDetails ( id , name , email , image ) using email
   const { data, isLoading } = useFetchProfileDetails(
@@ -20,10 +27,6 @@ const Navbar: React.FC = () => {
   );
 
   const userDetails = data?.userData;
-
-  if (!session) {
-    router.push("/sign-in");
-  }
 
   return (
     <nav className="bg-inherit max-w-[1920px] mx-auto md:px-10 xl:px-28 2xl:px-52 sticky top-0 inset-x-0 z-40 flex justify-between items-center px-10 py-5 border-b border-b-zinc-400">
