@@ -34,8 +34,12 @@ export default function BlogDetails({ blog }: BlogProps) {
   const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
   const [downvote, setDownvote] = useState<number>(blog?.downvotes?.length);
 
-  const [upvoted, setUpvoted] = useState(false);
-  const [downvoted, setDownvoted] = useState(false);
+  const [upvoted, setUpvoted] = useState(
+    blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId)
+  );
+  const [downvoted, setDownvoted] = useState(
+    blog?.downvotes.some((downvote) => downvote._id === userId)
+  );
 
   // for fetching user Details using email
   const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
@@ -44,18 +48,8 @@ export default function BlogDetails({ blog }: BlogProps) {
   useEffect(() => {
     if (data) {
       setUserId(data?.userData?._id);
-      const Isupvote =
-        blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
-
-      const Isdownvote =
-        blog?.downvotes &&
-        blog?.downvotes.some((downvote) => downvote._id === userId);
-
-      setUpvoted(Isupvote);
-
-      setDownvoted(Isdownvote);
     }
-  }, [data, blog, userId]);
+  }, [data, blog]);
 
   // muation function for deleting blog
   const { mutate: DeleteBlog } = useMutation({
