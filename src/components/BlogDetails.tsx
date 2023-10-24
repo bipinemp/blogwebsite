@@ -8,7 +8,7 @@ import {
   ArrowBigDown,
   MessageCircle,
 } from "lucide-react";
-import React, { useEffect, memo, useState } from "react";
+import React, { useEffect, memo, useState, useMemo, useCallback } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { formatDate } from "@/hooks/useFormatDate";
@@ -83,7 +83,11 @@ export default function BlogDetails({ blog }: BlogProps) {
   };
 
   // hook for formating the date of blog created
-  const formattedDate = formatDate(`${blog?.createdAt}`);
+
+  const formattedDate = useMemo(
+    () => formatDate(blog?.createdAt),
+    [blog?.createdAt]
+  );
 
   // mutation functions for upvoting
   const { mutate: UpvoteMutation } = useMutation({
@@ -95,7 +99,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     },
   });
 
-  const handleUpvote = async () => {
+  const handleUpvote = useCallback(async () => {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
     } else {
@@ -111,7 +115,18 @@ export default function BlogDetails({ blog }: BlogProps) {
       setUpvoted(!upvoted);
       UpvoteMutation(blog?._id);
     }
-  };
+  }, [
+    session,
+    router,
+    upvoted,
+    downvoted,
+    upvote,
+    downvote,
+    setUpvote,
+    setDownvoted,
+    UpvoteMutation,
+    blog,
+  ]);
 
   // mutation functions for downvoting
   const { mutate: DownvoteMutation } = useMutation({
@@ -123,7 +138,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     },
   });
 
-  const handleDownvote = async () => {
+  const handleDownvote = useCallback(async () => {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
     }
@@ -138,7 +153,18 @@ export default function BlogDetails({ blog }: BlogProps) {
     }
     setDownvoted(!downvoted);
     DownvoteMutation(blog?._id);
-  };
+  }, [
+    session,
+    router,
+    upvoted,
+    downvoted,
+    upvote,
+    downvote,
+    setUpvote,
+    setDownvoted,
+    UpvoteMutation,
+    blog,
+  ]);
 
   const actualVote = upvote - downvote;
 
