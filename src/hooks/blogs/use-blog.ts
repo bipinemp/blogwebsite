@@ -27,7 +27,7 @@ export const useUserDetails = (email: string) => {
 export const useBlogDetails = (id: string) => {
   const { data, isLoading, isError, error, isFetched, refetch, isFetching } =
     useQuery<BlogDetail>({
-      queryKey: ["blogDetails", "blogs", id],
+      queryKey: ["blogDetails", id],
       queryFn: () => fetchBlogDetails(id),
     });
 
