@@ -81,9 +81,7 @@ export default function BlogDetails({ blog }: BlogProps) {
   // mutation functions for upvoting
   const { mutate: UpvoteMutation } = useMutation({
     mutationFn: upvoteTheBlog,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogs"]);
-    },
+
     onError: () => alert("Something went wrong restart please"),
   });
 
@@ -108,9 +106,7 @@ export default function BlogDetails({ blog }: BlogProps) {
   // mutation functions for downvoting
   const { mutate: DownvoteMutation } = useMutation({
     mutationFn: downvoteTheBlog,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["blogs"]);
-    },
+
     onError: () => alert("Something went wrong restart please"),
   });
 
