@@ -29,7 +29,12 @@ export default function BlogDetails({ blog }: BlogProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const [userId, setUserId] = useState<string>("");
+  // for fetching user Details using email
+  const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
+
+  const [userId, setUserId] = useState<string>(
+    (data && data?.userData?._id) || ""
+  );
 
   const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
   const [downvote, setDownvote] = useState<number>(blog?.downvotes?.length);
@@ -44,24 +49,18 @@ export default function BlogDetails({ blog }: BlogProps) {
   const [upvoted, setUpvoted] = useState(upvoteFind);
   const [downvoted, setDownvoted] = useState(downvoteFind);
 
-  // for fetching user Details using email
-  const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
-
   // for giving the initial state to upvote and downvote of the blog
   useEffect(() => {
-    if (data) {
-      setUserId(data?.userData?._id);
-      const Isupvote =
-        blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
+    const Isupvote =
+      blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
 
-      const Isdownvote =
-        blog?.downvotes &&
-        blog?.downvotes.some((downvote) => downvote._id === userId);
+    const Isdownvote =
+      blog?.downvotes &&
+      blog?.downvotes.some((downvote) => downvote._id === userId);
 
-      setUpvoted(Isupvote);
+    setUpvoted(Isupvote);
 
-      setDownvoted(Isdownvote);
-    }
+    setDownvoted(Isdownvote);
   }, [data, blog, userId]);
 
   // muation function for deleting blog
