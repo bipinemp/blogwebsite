@@ -12,6 +12,7 @@ const nextConfig = {
     GOOGLE_SECRET: "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",
 
     NEXTAUTH_SECRET: "fakjdlfjdklfjaklf#!@#JKL@JK$@@#KL@#K@L@#@",
+    // NEXTAUTH_URL: "http://localhost:3000",
     NEXTAUTH_URL: "https://writz.vercel.app",
 
     MONGO_URL:
