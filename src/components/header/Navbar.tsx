@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!session) {
+    if (!session?.data?.user) {
       router.push("/sign-in");
     }
   }, [session]);
