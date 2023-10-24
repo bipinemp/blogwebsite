@@ -113,11 +113,12 @@ export default function AddComment({
   }
 
   function handleReplySubmit(blogId: string, commentId: string) {
-    if (session?.status === "unauthenticated") {
+    if (session?.status === "authenticated") {
+      const replyData = { blogId, commentId, reply: replies[commentId] };
+      CreateNewReplyMutation(replyData);
+    } else {
       router.push("/sign-in");
     }
-    const replyData = { blogId, commentId, reply: replies[commentId] };
-    CreateNewReplyMutation(replyData);
   }
 
   return (

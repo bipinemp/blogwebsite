@@ -8,7 +8,7 @@ import {
   ArrowBigDown,
   MessageCircle,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, memo, useState } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { formatDate } from "@/hooks/useFormatDate";
@@ -34,8 +34,15 @@ export default function BlogDetails({ blog }: BlogProps) {
   const [upvote, setUpvote] = useState<number>(blog?.upvotes?.length);
   const [downvote, setDownvote] = useState<number>(blog?.downvotes?.length);
 
-  const [upvoted, setUpvoted] = useState(false);
-  const [downvoted, setDownvoted] = useState(false);
+  let upvoteFind =
+    blog?.upvotes && blog?.upvotes.some((upvote) => upvote._id === userId);
+
+  let downvoteFind =
+    blog?.downvotes &&
+    blog?.downvotes.some((downvote) => downvote._id === userId);
+
+  const [upvoted, setUpvoted] = useState(upvoteFind);
+  const [downvoted, setDownvoted] = useState(downvoteFind);
 
   // for fetching user Details using email
   const { data } = useFetchProfileDetails(session?.data?.user?.email || "");
@@ -83,6 +90,9 @@ export default function BlogDetails({ blog }: BlogProps) {
     mutationFn: upvoteTheBlog,
 
     onError: () => alert("Something went wrong restart please"),
+    onSettled: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
   });
 
   const handleUpvote = async () => {
@@ -108,6 +118,9 @@ export default function BlogDetails({ blog }: BlogProps) {
     mutationFn: downvoteTheBlog,
 
     onError: () => alert("Something went wrong restart please"),
+    onSettled: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
   });
 
   const handleDownvote = async () => {
