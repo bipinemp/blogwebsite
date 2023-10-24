@@ -7,13 +7,11 @@ import { Loader2 } from "lucide-react";
 import BlogDetails from "@/components/BlogDetails";
 import { formatDate } from "@/hooks/useFormatDate";
 import { useUserProfileDetails } from "@/hooks/blogs/use-blog";
-import { useSession } from "next-auth/react";
 import { useSearchStore } from "@/store/store";
 import { useEffect } from "react";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const session = useSession();
 
   const { setSearchValue } = useSearchStore();
 
@@ -31,16 +29,24 @@ const Page = ({ params }: { params: { id: string } }) => {
       <div className="flex flex-col gap-10 mt-10">
         <div className="relative min-h-[200px] flex flex-col gap-4 items-center border-[2px] p-3 rounded-lg">
           <div>
-            <Image
-              src={`${session?.data?.user?.image}`}
-              width={100}
-              height={100}
-              alt="profile picture of user"
-              className="rounded-full border-[5px] border-gray-800"
-            />
+            {profileLoading ? (
+              <div className="w-[100px] h-[100px] bg-gray-700 rounded-full animate-pulse"></div>
+            ) : (
+              <Image
+                src={`${userDataa?.image}`}
+                width={100}
+                height={100}
+                alt="profile picture of user"
+                className="rounded-full border-[5px] border-gray-800"
+              />
+            )}
           </div>
           <h1 className="font-black text-xl tracking-widest">
-            {session?.data?.user?.name}
+            {profileLoading ? (
+              <div className="w-[150px] h-[25px] bg-gray-700 rounded animate-pulse"></div>
+            ) : (
+              userDataa?.name
+            )}
           </h1>
           {profileLoading ? (
             <div className="w-[200px] h-[24.5px] bg-gray-700 animate-pulse rounded"></div>
