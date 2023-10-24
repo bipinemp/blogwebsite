@@ -95,37 +95,25 @@ export default function BlogDetails({ blog }: BlogProps) {
     onSettled: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
-
   });
 
-  const handleUpvote = useCallback(async () => {
+  const handleUpvote = () => {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
-    } else {
-      setDownvoted(false);
-      if (!upvoted && downvoted) {
-        setUpvote(upvote + 1);
-        setDownvote(downvote - 1);
-      } else if (!upvoted && !downvoted) {
-        setUpvote(upvote + 1);
-      } else {
-        setUpvote(upvote - 1);
-      }
-      setUpvoted(!upvoted);
-      UpvoteMutation(blog?._id);
+      return;
     }
-  }, [
-    session,
-    router,
-    upvoted,
-    downvoted,
-    upvote,
-    downvote,
-    setUpvote,
-    setDownvoted,
-    UpvoteMutation,
-    blog,
-  ]);
+    setDownvoted(false);
+    if (!upvoted && downvoted) {
+      setUpvote(upvote + 1);
+      setDownvote(downvote - 1);
+    } else if (!upvoted && !downvoted) {
+      setUpvote(upvote + 1);
+    } else {
+      setUpvote(upvote - 1);
+    }
+    setUpvoted(!upvoted);
+    UpvoteMutation(blog?._id);
+  };
 
   // mutation functions for downvoting
   const { mutate: DownvoteMutation } = useMutation({
@@ -136,12 +124,12 @@ export default function BlogDetails({ blog }: BlogProps) {
     onSettled: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
-
   });
 
-  const handleDownvote = useCallback(async () => {
+  const handleDownvote = () => {
     if (session?.status === "unauthenticated") {
       router.push("/sign-in");
+      return;
     }
     setUpvoted(false);
     if (!downvoted && upvoted) {
@@ -154,18 +142,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     }
     setDownvoted(!downvoted);
     DownvoteMutation(blog?._id);
-  }, [
-    session,
-    router,
-    upvoted,
-    downvoted,
-    upvote,
-    downvote,
-    setUpvote,
-    setDownvoted,
-    UpvoteMutation,
-    blog,
-  ]);
+  };
 
   const actualVote = upvote - downvote;
 
