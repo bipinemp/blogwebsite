@@ -91,9 +91,11 @@ export default function BlogDetails({ blog }: BlogProps) {
     mutationFn: upvoteTheBlog,
 
     onError: () => alert("Something went wrong restart please"),
+
     onSettled: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
+
   });
 
   const handleUpvote = useCallback(async () => {
@@ -130,9 +132,11 @@ export default function BlogDetails({ blog }: BlogProps) {
     mutationFn: downvoteTheBlog,
 
     onError: () => alert("Something went wrong restart please"),
+
     onSettled: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
+
   });
 
   const handleDownvote = useCallback(async () => {
