@@ -90,7 +90,26 @@ export default function BlogDetails({ blog }: BlogProps) {
   const { mutate: UpvoteMutation } = useMutation({
     mutationFn: upvoteTheBlog,
 
-    onError: () => alert("Something went wrong restart please"),
+    onMutate: (updatedBlogId) => {
+      const optimisticBlog = {
+        ...blog,
+        upvotes: upvoted
+          ? blog?.upvotes.filter((user) => user._id !== userId)
+          : [...blog.upvotes, userId],
+
+        downvotes: downvoted
+          ? blog.downvotes.filter((user) => user?._id !== userId)
+          : blog.downvotes,
+      };
+
+      queryClient.setQueryData(["blogs", blog?._id], optimisticBlog);
+
+      return { updatedBlogId };
+    },
+
+    onError(error, variables, context) {
+      queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
+    },
 
     onSuccess: () => {
       queryClient.invalidateQueries(["blogs"]);
@@ -119,7 +138,26 @@ export default function BlogDetails({ blog }: BlogProps) {
   const { mutate: DownvoteMutation } = useMutation({
     mutationFn: downvoteTheBlog,
 
-    onError: () => alert("Something went wrong restart please"),
+    onMutate: (updatedBlogId) => {
+      const optimisticBlog = {
+        ...blog,
+        upvotes: upvoted
+          ? blog?.upvotes.filter((user) => user._id !== userId)
+          : blog.upvotes,
+
+        downvotes: downvoted
+          ? blog.downvotes.filter((user) => user?._id !== userId)
+          : [...blog.downvotes, userId],
+      };
+
+      queryClient.setQueryData(["blogs", blog?._id], optimisticBlog);
+
+      return { updatedBlogId };
+    },
+
+    onError(error, variables, context) {
+      queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
+    },
 
     onSuccess: () => {
       queryClient.invalidateQueries(["blogs"]);
