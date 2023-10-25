@@ -99,17 +99,12 @@ export default function AddComment({
           (textarea) => textarea !== data?.replyData?.commentId
         );
         setTextareas(filteredTextareas);
+        handleDismissReply(data?.replyData?.commentId);
       },
     });
 
-  function handleReplyFormSubmit(
-    e: React.FormEvent<HTMLFormElement>,
-    blogId: string,
-    commentId: string
-  ) {
-    e.preventDefault();
+  function handleReplyFormSubmit(blogId: string, commentId: string) {
     handleReplySubmit(blogId, commentId);
-    handleDismissReply(commentId);
   }
 
   function handleReplySubmit(blogId: string, commentId: string) {
@@ -196,12 +191,7 @@ export default function AddComment({
                   </Button>
                 )}
                 {textareas.includes(comment._id) ? (
-                  <form
-                    onSubmit={(e) =>
-                      handleReplyFormSubmit(e, blogDetails?._id, comment?._id)
-                    }
-                    className="flex flex-col gap-3"
-                  >
+                  <div className="flex flex-col gap-3">
                     <Textarea
                       value={replies[comment._id]}
                       onChange={(e) =>
@@ -211,7 +201,12 @@ export default function AddComment({
                       placeholder="Reply..."
                     />
                     <div className="flex gap-4">
-                      <Button type="submit">
+                      <Button
+                        onClick={() =>
+                          handleReplyFormSubmit(blogDetails?._id, comment?._id)
+                        }
+                        type="submit"
+                      >
                         {ReplyLoading ? (
                           <div className="flex items-center gap-3">
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -229,7 +224,7 @@ export default function AddComment({
                         Dismiss
                       </Button>
                     </div>
-                  </form>
+                  </div>
                 ) : null}
               </div>
             </div>
