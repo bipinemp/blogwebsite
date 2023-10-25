@@ -86,7 +86,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     [blog?.createdAt]
   );
 
-  // mutation functions for upvoting
+  // mutation function for upvoting
   const { mutate: UpvoteMutation } = useMutation({
     mutationFn: upvoteTheBlog,
 
@@ -138,7 +138,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     UpvoteMutation(blog?._id);
   };
 
-  // mutation functions for downvoting
+  // mutation function for downvoting
   const { mutate: DownvoteMutation } = useMutation({
     mutationFn: downvoteTheBlog,
 
