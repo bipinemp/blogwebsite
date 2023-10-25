@@ -111,6 +111,10 @@ export default function BlogDetails({ blog }: BlogProps) {
     onError(error, variables, context) {
       queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
     },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
+    },
   });
 
   const handleUpvote = () => {
@@ -155,6 +159,10 @@ export default function BlogDetails({ blog }: BlogProps) {
 
     onError(error, variables, context) {
       queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(["blogs"]);
     },
   });
 
