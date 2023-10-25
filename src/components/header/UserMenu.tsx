@@ -14,20 +14,34 @@ import LogOutBtn from "./LogOutBtn";
 import { Avatar } from "@radix-ui/react-avatar";
 import Image from "next/image";
 import Link from "next/link";
-import { UserDetail } from "@/types/postTypes";
+import { useFetchProfileDetails } from "@/hooks/blogs/use-blog";
+import { useSession } from "next-auth/react";
 
-const UserMenu = ({ userData }: { userData: UserDetail | undefined }) => {
-  if (!userData) return null;
+const UserMenu = () => {
+  const session = useSession();
+
+  // hook  for getting  UserDetails ( id , name , email , image ) using email
+  const { data, isLoading } = useFetchProfileDetails(
+    session?.data?.user?.email || ""
+  );
+
+  if (isLoading) {
+    return (
+      <div className="relative block w-[45px] h-[45px] bg-gray-700 rounded-full animate-pulse"></div>
+    );
+  }
+
+  const userDetails = data?.userData;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          {userData?.image === "" || userData?.image === undefined ? (
+          {userDetails?.image === "" || userDetails?.image === undefined ? (
             <div className="relative block w-[50px] h-[50px] bg-gray-700 rounded-full animate-pulse"></div>
           ) : (
             <Image
-              src={userData?.image || ""}
+              src={userDetails?.image || ""}
               width={40}
               height={40}
               alt="profile picture"
@@ -40,16 +54,16 @@ const UserMenu = ({ userData }: { userData: UserDetail | undefined }) => {
         <DropdownMenuLabel>
           <DropdownMenuItem className="cursor-pointer flex flex-col items-start group">
             <p className="font-semibold tracking-wide group-hover:underline">
-              {userData?.name}
+              {userDetails?.name}
             </p>
             <span className="text-xs text-gray-400 tracking-wide group-hover:underline">
-              @{userData?.email}
+              @{userDetails?.email}
             </span>
           </DropdownMenuItem>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
-        <Link href={`/profile/${userData?._id}`}>
+        <Link href={`/profile/${userDetails?._id}`}>
           <DropdownMenuItem className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
