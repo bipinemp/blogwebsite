@@ -90,7 +90,8 @@ export default function BlogDetails({ blog }: BlogProps) {
   const { mutate: UpvoteMutation } = useMutation({
     mutationFn: upvoteTheBlog,
 
-    onMutate: (updatedBlogId) => {
+    onMutate: async (updatedBlogId) => {
+      await queryClient.cancelQueries(["blogs"]);
       const optimisticBlog = {
         ...blog,
         upvotes: upvoted
@@ -111,7 +112,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
     },
 
-    onSuccess: () => {
+    onSuccess(data, variables, context) {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
@@ -138,7 +139,8 @@ export default function BlogDetails({ blog }: BlogProps) {
   const { mutate: DownvoteMutation } = useMutation({
     mutationFn: downvoteTheBlog,
 
-    onMutate: (updatedBlogId) => {
+    onMutate: async (updatedBlogId) => {
+      await queryClient.cancelQueries(["blogs"]);
       const optimisticBlog = {
         ...blog,
         upvotes: upvoted
@@ -159,7 +161,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
     },
 
-    onSuccess: () => {
+    onSuccess(data, variables, context) {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
@@ -181,8 +183,6 @@ export default function BlogDetails({ blog }: BlogProps) {
     setDownvoted(!downvoted);
     DownvoteMutation(blog?._id);
   };
-
-  const actualVote = upvote - downvote;
 
   return (
     <div
@@ -234,7 +234,7 @@ export default function BlogDetails({ blog }: BlogProps) {
                 : "hover:bg-neutral-800"
             } p-[0.2rem] rounded-full transition`}
           />
-          <h3 className="w-[20px] text-center">{actualVote} </h3>
+          <h3 className="w-[20px] text-center">{upvote - downvote} </h3>
           <ArrowBigDown
             onClick={(e) => {
               handleDownvote();
