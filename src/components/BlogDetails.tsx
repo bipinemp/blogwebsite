@@ -92,7 +92,7 @@ export default function BlogDetails({ blog }: BlogProps) {
 
     onError: () => alert("Something went wrong restart please"),
 
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
@@ -121,7 +121,7 @@ export default function BlogDetails({ blog }: BlogProps) {
 
     onError: () => alert("Something went wrong restart please"),
 
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
