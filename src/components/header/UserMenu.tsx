@@ -21,6 +21,7 @@ const UserMenu = () => {
   const session = useSession();
 
   // hook  for getting  UserDetails ( id , name , email , image ) using email
+
   const { data, isLoading } = useFetchProfileDetails(
     session?.data?.user?.email || ""
   );
