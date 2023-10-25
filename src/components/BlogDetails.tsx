@@ -90,7 +90,8 @@ export default function BlogDetails({ blog }: BlogProps) {
   const { mutate: UpvoteMutation } = useMutation({
     mutationFn: upvoteTheBlog,
 
-    onMutate: (updatedBlogId) => {
+    onMutate: async (updatedBlogId) => {
+      await queryClient.cancelQueries(["blogs"]);
       const optimisticBlog = {
         ...blog,
         upvotes: upvoted
@@ -134,7 +135,8 @@ export default function BlogDetails({ blog }: BlogProps) {
   const { mutate: DownvoteMutation } = useMutation({
     mutationFn: downvoteTheBlog,
 
-    onMutate: (updatedBlogId) => {
+    onMutate: async (updatedBlogId) => {
+      await queryClient.cancelQueries(["blogs"]);
       const optimisticBlog = {
         ...blog,
         upvotes: upvoted
@@ -174,7 +176,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     DownvoteMutation(blog?._id);
   };
 
-  const actualVote = upvote - downvote;
+  const actualVote = useMemo(() => upvote - downvote, [upvote, downvote]);
 
   return (
     <div
