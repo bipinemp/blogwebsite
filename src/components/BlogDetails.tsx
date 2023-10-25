@@ -184,6 +184,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     DownvoteMutation(blog?._id);
   };
 
+  
   return (
     <div
       key={blog?._id}
