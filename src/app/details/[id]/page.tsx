@@ -30,8 +30,6 @@ const Page = ({ params }: { params: { id: string } }) => {
   // Blog details
   const { data: BlogData, isLoading } = useBlogDetails(id);
 
-  console.log(BlogData?.blog.comments);
-
   // hook for formating the User's account creation date
   const formattedDate = formatDate(BlogData?.blog?.createdAt || "");
 
