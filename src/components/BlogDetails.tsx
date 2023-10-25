@@ -92,6 +92,9 @@ export default function BlogDetails({ blog }: BlogProps) {
 
     onMutate: async (updatedBlogId) => {
       await queryClient.cancelQueries(["blogs"]);
+
+      const previousData = queryClient.getQueriesData(["blogs"]);
+
       const optimisticBlog = {
         ...blog,
         upvotes: upvoted
@@ -105,14 +108,14 @@ export default function BlogDetails({ blog }: BlogProps) {
 
       queryClient.setQueryData(["blogs", blog?._id], optimisticBlog);
 
-      return { updatedBlogId };
+      return { updatedBlogId, previousData };
     },
 
     onError(error, variables, context) {
-      queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
+      queryClient.setQueryData(["blogs", context?.previousData], blog);
     },
 
-    onSuccess(data, variables, context) {
+    onSettled: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
@@ -141,6 +144,9 @@ export default function BlogDetails({ blog }: BlogProps) {
 
     onMutate: async (updatedBlogId) => {
       await queryClient.cancelQueries(["blogs"]);
+
+      const previousData = queryClient.getQueriesData(["blogs"]);
+
       const optimisticBlog = {
         ...blog,
         upvotes: upvoted
@@ -154,14 +160,14 @@ export default function BlogDetails({ blog }: BlogProps) {
 
       queryClient.setQueryData(["blogs", blog?._id], optimisticBlog);
 
-      return { updatedBlogId };
+      return { updatedBlogId, previousData };
     },
 
     onError(error, variables, context) {
-      queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
+      queryClient.setQueryData(["blogs", context?.previousData], blog);
     },
 
-    onSuccess(data, variables, context) {
+    onSettled: () => {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
