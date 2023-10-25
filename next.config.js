@@ -13,8 +13,8 @@ const nextConfig = {
 
     NEXTAUTH_SECRET: "fakjdlfjdklfjaklf#!@#JKL@JK$@@#KL@#K@L@#@",
 
-    NEXTAUTH_URL: "http://localhost:3000",
-    // NEXTAUTH_URL: "https://writz.vercel.app",
+    // NEXTAUTH_URL: "http://localhost:3000",
+    NEXTAUTH_URL: "https://writz.vercel.app",
 
     MONGO_URL:
       "mongodb+srv://bipinbhandari:gaindakot@nodejstutorial.bv7ep8i.mongodb.net/blogwebsite?retryWrites=true&w=majority",
