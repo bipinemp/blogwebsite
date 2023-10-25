@@ -112,7 +112,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
     },
 
-    onSuccess: () => {
+    onSuccess(data, variables, context) {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
@@ -161,7 +161,7 @@ export default function BlogDetails({ blog }: BlogProps) {
       queryClient.setQueryData(["blogs", context?.updatedBlogId], blog);
     },
 
-    onSuccess: () => {
+    onSuccess(data, variables, context) {
       queryClient.invalidateQueries(["blogs"]);
     },
   });
@@ -184,8 +184,7 @@ export default function BlogDetails({ blog }: BlogProps) {
     DownvoteMutation(blog?._id);
   };
 
-  const actualVote = useMemo(() => upvote - downvote, [upvote, downvote]);
-
+  
   return (
     <div
       key={blog?._id}
@@ -236,7 +235,7 @@ export default function BlogDetails({ blog }: BlogProps) {
                 : "hover:bg-neutral-800"
             } p-[0.2rem] rounded-full transition`}
           />
-          <h3 className="w-[20px] text-center">{actualVote} </h3>
+          <h3 className="w-[20px] text-center">{upvote - downvote} </h3>
           <ArrowBigDown
             onClick={(e) => {
               handleDownvote();
