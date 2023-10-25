@@ -79,7 +79,7 @@ export type ProfileDetails = {
 };
 
 // for search Results
-export type SearchResults = {
+export type pSearchResults = {
   message: String;
   filteredBlogs: Blog[];
 };
