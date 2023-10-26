@@ -38,7 +38,7 @@ const Page: React.FC = () => {
     resolver: zodResolver(blogSchema),
   });
 
-  // mutation function for creating blog
+  // mutation function for creating blog...
   const { mutate: CreateBlog, isLoading: CreatingBlog } = useMutation({
     mutationFn: createNewBlog,
     onSuccess: () => {
