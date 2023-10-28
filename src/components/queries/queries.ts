@@ -1,8 +1,8 @@
 import { TBlogSchema } from "@/types/postTypes";
 import axios from "axios";
 
-const BLOG_BASE_URL = process.env.BLOG_BASE_URL as string;
-const PROFILE_BASE_URL = process.env.PROFILE_BASE_URL as string;
+const BLOG_BASE_URL = process.env.NEXT_PUBLIC_BLOG_BASE_URL;
+const PROFILE_BASE_URL = process.env.NEXT_PUBLIC_PROFILE_BASE_URL;
 // const BLOG_BASE_URL = "http://localhost:3000/api/blogs";
 // const PROFILE_BASE_URL = "http://localhost:3000/api/profile";
 
