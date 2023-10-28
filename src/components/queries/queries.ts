@@ -166,7 +166,7 @@ export const fetchSearchBlogs = async (query: string) => {
 export const fetchUserProfile = async (id: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BLOG_PROFILE_URL}/${id}`
+      `${process.env.NEXT_PUBLIC_PROFILE_BASE_URL}/${id}`
     );
     return response.data;
   } catch (error) {
