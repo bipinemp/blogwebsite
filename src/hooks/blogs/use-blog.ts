@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 // for fetching user Details
 export const useUserDetails = (email: string) => {
   const { data, isLoading, isError, error } = useQuery<ProfileDetails>({
-    queryKey: ["profile"],
+    queryKey: ["profile", email],
     queryFn: () => fetchUserDetails(email),
   });
 
