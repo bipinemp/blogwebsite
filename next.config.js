@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    BASE_URL: "http://localhost:3000",
-    NEXTAUTH_URL: "http://localhost:3000",
+    BASE_URL: "https://writz.vercel.app",
+    NEXTAUTH_URL: "https://writz.vercel.app",
     MONGO_URL:
       "mongodb+srv://bipinbhandari:gaindakot@nodejstutorial.bv7ep8i.mongodb.net/blogwebsite?retryWrites=true&w=majority",
     NEXTAUTH_SECRET: "fakjdlfjdklfjaklf#!@#JKL@JK$@@#KL@#K@L@#@",
