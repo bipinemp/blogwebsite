@@ -8,7 +8,13 @@ import {
   ArrowBigDown,
   MessageCircle,
 } from "lucide-react";
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+import React, { useEffect, useState, useMemo } from "react";
 import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import { formatDate } from "@/hooks/useFormatDate";
@@ -193,12 +199,33 @@ export default function BlogDetails({ blog }: BlogProps) {
   return (
     <div
       key={blog?._id}
-      onClick={() => router.push(`/details/${blog?._id}`)}
-      className="min-h-[220px] z-20 cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
+      className="min-h-[220px] cursor-pointer border-[2px] border-zinc-500 rounded-lg p-4 flex flex-col gap-4"
     >
       <div className="flex items-center justify-between border-b border-zinc-400 pb-3">
         <div className="flex items-center gap-2">
-          <AvatarDemo image={blog?.user?.image} id={blog?.user?._id} />
+          <HoverCard>
+            <HoverCardTrigger>
+              <AvatarDemo image={blog?.user?.image} id={blog?.user?._id} />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-fit z-30">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3 justify-between">
+                  <AvatarDemo image={blog?.user?.image} id={blog?.user?._id} />
+                  <div className="flex flex-col">
+                    <h3>{blog?.user.name}</h3>
+                    <p className="text-xs text-gray-400 tracking-wide">
+                      {blog?.user.email}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => router.push(`/profile/${blog?.user?._id}`)}
+                >
+                  View Profile
+                </Button>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
 
           <div className="flex flex-col">
             <p className="text-[0.85rem]  font-semibold tracking-wide">
@@ -216,7 +243,10 @@ export default function BlogDetails({ blog }: BlogProps) {
           />
         ) : null}
       </div>
-      <div className="flex flex-col gap-2">
+      <div
+        onClick={() => router.push(`/details/${blog?._id}`)}
+        className="flex flex-col gap-2"
+      >
         <h1 className="font-bold text-2xl tracking-wide flex gap-1 items-center">
           <ChevronRight className="w-4 h-4 font-bold" /> {blog?.title}
           <span className="text-xs text-gray-400">
@@ -225,7 +255,10 @@ export default function BlogDetails({ blog }: BlogProps) {
         </h1>
         <p className="pl-5 opacity-80">{blog?.description}</p>
       </div>
-      <div className="flex gap-5 items-center pl-5">
+      <div
+        onClick={() => router.push(`/details/${blog?._id}`)}
+        className="flex gap-5 items-center pl-5"
+      >
         <div className="flex gap-1 items-center opacity-80">
           <ArrowBigUp
             onClick={(e) => {

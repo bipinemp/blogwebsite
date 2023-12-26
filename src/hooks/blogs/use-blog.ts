@@ -18,6 +18,7 @@ export const useUserDetails = (email: string) => {
   const { data, isLoading, isError, error } = useQuery<ProfileDetails>({
     queryKey: ["profile", email],
     queryFn: () => fetchUserDetails(email),
+    keepPreviousData: false,
   });
 
   return { data, isLoading, isError, error };
@@ -29,6 +30,7 @@ export const useBlogDetails = (id: string) => {
     useQuery<BlogDetail>({
       queryKey: ["blogDetails", id],
       queryFn: () => fetchBlogDetails(id),
+      keepPreviousData: false,
     });
 
   return { data, isLoading, isError, error, isFetched, refetch, isFetching };
@@ -64,7 +66,7 @@ export const useUserProfileDetails = (id: string) => {
     });
 
   const { data: userBlogs, isLoading: blogsLoading } = useQuery<Blogs>({
-    queryKey: ["userblogs", userData?.userData?._id],
+    queryKey: ["userblogs", id],
     queryFn: () => fetchUserBlogs(id),
     // enabled: userData?.userData?._id !== null,
   });
