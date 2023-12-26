@@ -1,24 +1,24 @@
-"use client";
-
 import Link from "next/link";
 import DarkLightMode from "./DarkLightMode";
 import UserMenu from "./UserMenu";
 import { Search } from "./Search";
 import SignInBtn from "./SignInBtn";
 import { Button } from "../ui/button";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { getServerSession } from "next-auth";
+// import { useSession } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+// import { useEffect } from "react";
 
-const Navbar: React.FC = () => {
-  const session = useSession();
-  const router = useRouter();
+const Navbar: React.FC = async () => {
+  const session = await getServerSession();
 
-  useEffect(() => {
-    if (!session?.data?.user) {
-      router.push("sign-in");
-    }
-  }, [session]);
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   if (!session?.data?.user) {
+  //     router.push("sign-in");
+  //   }
+  // }, [session]);
 
   return (
     <nav className="bg-inherit max-w-[1920px] mx-auto md:px-10 xl:px-28 2xl:px-52 sticky top-0 inset-x-0 z-40 flex justify-between items-center px-10 py-5 border-b border-b-zinc-400">
@@ -33,17 +33,17 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex gap-4 items-center">
-        {session?.data?.user ? (
+        {session?.user ? (
           <Link href={"/new"}>
             <Button variant="outline" className="border-zinc-500">
               Create Blog
             </Button>
           </Link>
         ) : null}
-        {session?.data?.user ? null : <SignInBtn />}
+        {session?.user ? null : <SignInBtn />}
         <DarkLightMode />
 
-        {!session.data?.user ? null : <UserMenu />}
+        {!session?.user ? null : <UserMenu />}
       </div>
     </nav>
   );

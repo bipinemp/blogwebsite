@@ -8,11 +8,9 @@ import { fetchAllBlogs } from "./queries/queries";
 import { Fragment, useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import BlogLoading from "./BlogLoading";
-import { useSearchStore } from "@/store/store";
 
 export default function Blogs() {
   const lastBlogRef = useRef(null);
-  const { setSearchValue } = useSearchStore();
 
   const { ref, entry } = useIntersection({
     root: lastBlogRef.current,
@@ -33,10 +31,6 @@ export default function Blogs() {
       fetchNextPage();
     }
   }, [entry, fetchNextPage]);
-
-  useEffect(() => {
-    setSearchValue("");
-  }, [setSearchValue]);
 
   const BlogsData = data?.pages?.map((page) => page);
   const blogs = BlogsData?.flatMap((blog) => blog.blogs);

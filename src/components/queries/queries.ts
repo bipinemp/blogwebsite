@@ -2,10 +2,11 @@ import { TBlogSchema } from "@/types/postTypes";
 import axios from "axios";
 
 // for creating a new blog
+
 export const createNewBlog = async (blogData: TBlogSchema) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/create`,
+      `${process.env.BASE_URL}/api/blogs/create`,
       blogData
     );
     const data = response.data;
@@ -24,7 +25,7 @@ type COMMENTDATATYPE = {
 export const createNewComment = async (data: COMMENTDATATYPE) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/comment/${data.blogId}`,
+      `${process.env.BASE_URL}/api/blogs/comment/${data.blogId}`,
       data
     );
     return response;
@@ -43,7 +44,7 @@ export type REPLYDATATYPE = {
 export const createNewReply = async (data: REPLYDATATYPE) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/reply?blogId=${data.blogId}&commentId=${data.commentId}`,
+      `${process.env.BASE_URL}/api/blogs/reply?blogId=${data.blogId}&commentId=${data.commentId}`,
       data
     );
     return response.data;
@@ -56,7 +57,7 @@ export const createNewReply = async (data: REPLYDATATYPE) => {
 export const fetchAllBlogs = async (pageParam: number) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/readall?page=${pageParam}`
+      `${process.env.BASE_URL}/api/blogs/readall?page=${pageParam}`
     );
     const data = response.data;
     return data;
@@ -69,7 +70,7 @@ export const fetchAllBlogs = async (pageParam: number) => {
 export const upvoteTheBlog = async (id: string) => {
   try {
     const response = axios.post(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/upvote/${id}`
+      `${process.env.BASE_URL}/api/blogs/upvote/${id}`
     );
     return response;
   } catch (error) {
@@ -81,7 +82,7 @@ export const upvoteTheBlog = async (id: string) => {
 export const downvoteTheBlog = async (id: string) => {
   try {
     const response = axios.post(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/downvote/${id}`
+      `${process.env.BASE_URL}/api/blogs/downvote/${id}`
     );
     return response;
   } catch (error) {
@@ -93,7 +94,7 @@ export const downvoteTheBlog = async (id: string) => {
 export const fetchUserDetails = async (email: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_PROFILE_BASE_URL}/email/${email}`
+      `${process.env.BASE_URL}/api/profile/email/${email}`
     );
     const data = response.data;
     return data;
@@ -106,7 +107,7 @@ export const fetchUserDetails = async (email: string) => {
 export const fetchBlogDetails = async (id: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/details/${id}`
+      `${process.env.BASE_URL}/api/blogs/details/${id}`
     );
     const data = response.data;
     return data;
@@ -119,7 +120,7 @@ export const fetchBlogDetails = async (id: string) => {
 export const deleteBlog = async (id: string) => {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/delete/${id}`
+      `${process.env.BASE_URL}/api/blogs/delete/${id}`
     );
     return response;
   } catch (error) {
@@ -138,9 +139,10 @@ type BLOGDATATYPE = {
 export const updateBlog = async (dataa: BLOGDATATYPE) => {
   try {
     const response = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/edit/${dataa.blogId}`,
+      `${process.env.BASE_URL}/api/blogs/edit/${dataa.blogId}`,
       dataa
     );
+
     const data = response.data;
     return data;
   } catch (error) {
@@ -152,7 +154,7 @@ export const updateBlog = async (dataa: BLOGDATATYPE) => {
 export const fetchSearchBlogs = async (query: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/search?query=${query}`
+      `${process.env.BASE_URL}/api/blogs/search?query=${query}`
     );
     if (response.status === 200) {
       return response.data;
@@ -166,7 +168,7 @@ export const fetchSearchBlogs = async (query: string) => {
 export const fetchUserProfile = async (id: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_PROFILE_BASE_URL}/${id}`
+      `${process.env.BASE_URL}/api/profile/${id}`
     );
     return response.data;
   } catch (error) {
@@ -178,7 +180,7 @@ export const fetchUserProfile = async (id: string) => {
 export const fetchUserBlogs = async (id: string) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/readuserblogs/${id}`
+      `${process.env.BASE_URL}/api/blogs/readuserblogs/${id}`
     );
     return response.data;
   } catch (error) {

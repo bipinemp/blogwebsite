@@ -197,7 +197,7 @@ export default function AddComment({
                       onChange={(e) =>
                         handleReplyChange(comment._id, e.target.value)
                       }
-                      className="w-[50%] bg-black"
+                      className="w-[50%] border-gray-400 bg-white text-black dark:text-white dark:bg-black"
                       placeholder="Reply..."
                     />
                     <div className="flex gap-4">
