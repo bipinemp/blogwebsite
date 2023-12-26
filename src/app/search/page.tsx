@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 
 const Page = () => {
   const searchParams = useSearchParams();
-  const q = searchParams.get("search");
+  const q = searchParams.get("query");
   const { data, isLoading } = useSearchBlogs(q || "");
 
   return (

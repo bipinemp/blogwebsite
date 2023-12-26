@@ -12,13 +12,13 @@ export function Search() {
   function searchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const val = e.target as HTMLFormElement;
-    const search = val.search as HTMLInputElement;
+    const query = val.query as HTMLInputElement;
     const newParams = new URLSearchParams(searchParams.toString());
 
-    if (search.value) {
-      newParams.set("search", search.value);
+    if (query.value) {
+      newParams.set("query", query.value);
     } else {
-      newParams.delete("search");
+      newParams.delete("query");
     }
     router.push(createUrl("/search", newParams));
   }
@@ -29,7 +29,7 @@ export function Search() {
         <Input
           key={searchParams?.get("search")}
           type="text"
-          name="search"
+          name="query"
           autoComplete="off"
           placeholder="Search..."
           defaultValue={searchParams?.get("search") || ""}
